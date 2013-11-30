@@ -49,7 +49,7 @@ class blog_admin extends app
 		echo '<div style="float: left; width: 200px;"><h4>Categories</h4>';
 		echo '<form action="'.$this->inst_base.'addcat/" method="post"><input type="text" name="category" placeholder="New category" /></form>';
 		foreach($this->cats as $cat)
-			echo '<a href="'.$this->inst_base.'cat/'.$cat.'/">'.$cat.'</a><br />';
+			echo '<a href="'.$this->inst_base.'cat/'.urlencode($cat).'/">'.$cat.'</a><br />';
 		echo '</div>';
 		echo '<div style="margin-left: 200px">';
 		
@@ -63,6 +63,7 @@ class blog_admin extends app
 	
 	private function cat($vars)
 	{
+		$vars[1] = urldecode($vars[1]);
 		$this->view($vars, $vars[1]);
 	}
 	
