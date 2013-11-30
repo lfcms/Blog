@@ -175,7 +175,7 @@ class blog extends app
 				$out
 			);
 		} else {
-		
+		 
 			
 			include 'view/thread.php';
 			
