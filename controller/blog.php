@@ -20,7 +20,7 @@ class blog extends app
 			$this->paginate();
 	}
 	
-	public function cat($args)
+	public function cat($args) 
 	{
 		$args[1] = urldecode($args[1]);
 		$this->paginate(0, 3, $args[1]);
