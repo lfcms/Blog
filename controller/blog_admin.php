@@ -1,3 +1,5 @@
+<link href="%relbase%lf/apps/blog/css/styles.css" rel="stylesheet">
+
 <?php
 
 class blog_admin extends app
@@ -6,13 +8,15 @@ class blog_admin extends app
 	{
 		$result = $this->db->fetchall('SELECT DISTINCT instance FROM io_threads ORDER BY instance');
 	
-		echo '<form action="%appurl%addinst/" method="post"><input type="text" name="instance" placeholder="New Instance" /></form>';
+		echo '<form class="instance-title" action="%appurl%addinst/" method="post"><input type="text" name="instance" placeholder="New Instance" /></form>';
 		if($result)
+		echo '<ul class="instance-list">';
 		foreach($result as $instance)
 		{
 			$instance = $instance['instance'];
-			echo '[<a href="%appurl%rminst/'.urlencode($instance).'/">x</a>] <a href="%appurl%inst/'.urlencode($instance).'/">'.$instance.'</a><br />';
+			echo '<li><a href="%appurl%inst/'.urlencode($instance).'/" class=".blog-instance">'.$instance.'</a><a href="%appurl%rminst/'.urlencode($instance).'/" class="delete-button">x</a></li>';
 		}
+		echo '</ul>';
 		/*
 		// No article selected
 		?>
