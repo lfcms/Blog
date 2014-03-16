@@ -147,7 +147,7 @@ class blog_admin extends app
 			<br /><br />		
 			Category: <select name="category" id=""><?php echo $cat_options; ?></select> or <input type="text" name="newcat" placeholder="New Category" />
 			<br /><br />		
-			<textarea name="content"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
+			<textarea id="ckeditor" name="content"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
 			<br />
 			<input type="submit" value="Save" /> <?=$msg;?>
 		</form>
@@ -201,7 +201,7 @@ class blog_admin extends app
 			<input type="submit" class="submit" value="Post" /><br /><br />
 			<input type="text" name="title" value="New Title" class="title" />
 			Category: <select name="category" id=""><?php echo $cat_options; ?></select> or <input type="text" name="newcat" placeholder="New Category" /><br /><br />
-			<textarea name="content"></textarea>
+			<textarea id="ckeditor" name="content"></textarea>
 			<input type="hidden" name="access" value="public" />
 		</form>
 		<?php
@@ -278,11 +278,5 @@ class blog_admin extends app
 		redirect302();
 	}
 }
-
-
-if(is_file(ROOT.'system/lib/tinymce/js.html'))
-	readfile(ROOT.'system/lib/tinymce/js.html');
-else
-	echo 'No "TinyMCE" package found at '.ROOT.'system/lib/tinymce/';
 
 ?>
