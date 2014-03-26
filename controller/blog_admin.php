@@ -1,4 +1,4 @@
-<link href="%relbase%lf/apps/blog/css/styles.css" rel="stylesheet">
+<link href="%relbase%lf/apps/blog/css/blog_styles.css" rel="stylesheet">
 <?php
  
 class blog_admin extends app

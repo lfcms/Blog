@@ -1,3 +1,12 @@
+h3 {
+	padding: 15px;
+}
+h4 {
+	padding: 15px;
+}
+p {
+	padding: 15px;
+}
 .dashboard_manage {
 	padding: 0;
 }
@@ -16,17 +25,19 @@
 .instance-list {
 }
 .instance-list li {
+	border-left: 3px solid #bbb;
     background-color: #f5f5f5;
-	border-top: 1px dashed #bbb;
-	
+    border-bottom: 1px solid #e2e2e2;
     padding: 15px;
 }
-.instance-list li:first-child {
-	border-top: none;
+.instance-list li:last-child {
+	border-bottom: none;
 }
 .instance-list li:hover {
 	background: #fff;
+	border-bottom-color: #bbb;
+	border-left-color: #0063aa;
 }
-.instance-list li .delete-button {
+.instance-list li .delete_item {
 	float: right;
 }

@@ -5,7 +5,7 @@
 			$instance = $instance['instance']; 
 			?><li>
 				<a href="%appurl%inst/<?=urlencode($instance);?>/" class=".blog-instance"><?=$instance;?></a>
-				<a href="%appurl%rminst/<?=urlencode($instance);?>/" class="delete-button">x</a>
+				<a href="%appurl%rminst/<?=urlencode($instance);?>/" class="delete_item">x</a>
 			</li>
 		<?php endforeach; ?>
 	<?php else: ?>
