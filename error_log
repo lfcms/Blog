@@ -54,3 +54,9 @@
 [30-Nov-2013 07:45:34 America/New_York] PHP Parse error:  syntax error, unexpected T_IS_NOT_EQUAL in /home/bios/public_html/littlefoot/lf/apps/blog/view/main.php on line 46
 [30-Nov-2013 07:45:34 America/New_York] PHP Parse error:  syntax error, unexpected T_IS_NOT_EQUAL in /home/bios/public_html/littlefoot/lf/apps/blog/view/main.php on line 46
 [30-Nov-2013 07:45:35 America/New_York] PHP Parse error:  syntax error, unexpected T_IS_NOT_EQUAL in /home/bios/public_html/littlefoot/lf/apps/blog/view/main.php on line 46
+[25-Mar-2014 18:01:23 America/New_York] PHP Fatal error:  Class 'blog_admin' not found in /home/bios/public_html/littlefoot/lf/system/littlefoot.php on line 748
+[25-Mar-2014 18:02:10 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 13
+[25-Mar-2014 18:02:12 America/New_York] PHP Parse error:  syntax error, unexpected '*' in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 13
+[25-Mar-2014 18:02:34 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 137
+[25-Mar-2014 18:17:23 America/New_York] PHP Fatal error:  Call to undefined method blog_admin::TEST() in /home/bios/public_html/littlefoot/lf/system/app.class.php on line 63
+[25-Mar-2014 18:17:36 America/New_York] PHP Fatal error:  Call to undefined method blog_admin::TEST() in /home/bios/public_html/littlefoot/lf/system/app.class.php on line 63
