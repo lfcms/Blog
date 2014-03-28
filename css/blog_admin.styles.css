@@ -22,13 +22,12 @@ p {
 	width: 630px;
 	float: left;
 }
-.blog-wrapper .new-article-button {
+.new-article-button {
     border-bottom: 1px solid #bbb;
     padding-bottom: 15px;
     background-color: #fff;
-
 }
-.blog-wrapper .new-article-button a {
+.new-article-button a {
     margin: auto;
     text-align:  center;
     display: block;
@@ -39,7 +38,7 @@ p {
     border: 1px solid #bbb;
     background-color: #00884F;
 }
-.blog-wrapper .new-article-button a:hover {
+.new-article-button a:hover {
 	background-color: #00aa63;
 }
 .blog-category-wrapper {
@@ -69,13 +68,25 @@ p {
 	border-left-color: #00aa63;
 	font-weight: bold;
 }
-.instance-title,
+.blog-instance {
+	font-size: 20px
+}
+.instance-title {
+	border-bottom: 1px solid #bbb;
+	background-color: #fff;
+	padding: 15px;
+}
+.instance-title input {
+	border: 1px solid #bbb;
+	width: 100%;
+	padding: 5px;
+	font-size: 22px;
+}
 .category-title {
 	border-bottom: 1px solid #bbb;
 	background-color: #fff;
 	padding: 15px;
 }
-.instance-title input,
 .category-title input {
 	border: 1px solid #bbb;
 	width: 100%;
