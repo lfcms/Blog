@@ -11,8 +11,8 @@ CREATE TABLE `io_threads` (
 ) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 -- In case you are using an old blog table style
-ALTER TABLE io_threads ADD instance varchar(128) NOT NULL;
-ALTER TABLE io_threads ADD category varchar(128) NOT NULL;
+ALTER TABLE io_threads ADD instance varchar(128) DEFAULT 'default';
+ALTER TABLE io_threads ADD category varchar(128) DEFAULT 'uncategorized';
 
 CREATE TABLE `io_messages` (
   `msg_id` int(5) NOT NULL AUTO_INCREMENT,
