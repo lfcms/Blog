@@ -10,6 +10,10 @@ CREATE TABLE `io_threads` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
+-- In case you are using an old blog table style
+ALTER TABLE io_threads ADD instance varchar(128) NOT NULL;
+ALTER TABLE io_threads ADD category varchar(128) NOT NULL;
+
 CREATE TABLE `io_messages` (
   `msg_id` int(5) NOT NULL AUTO_INCREMENT,
   `date` varchar(20) NOT NULL,
@@ -30,3 +34,4 @@ CREATE TABLE `io_like` (
   `scope` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
