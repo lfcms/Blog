@@ -1,5 +1,5 @@
 <?php
-
+6
 class blog extends app
 {
 	
@@ -167,7 +167,7 @@ class blog extends app
 			$comments = str_replace('%appurl%', '%appurl%comment/', $comments);
 			chdir($cwd);
 			
-			include 'view/thread2.php';
+			include 'view/thread.php';
 			$out = ob_get_clean();
 			$out = preg_replace(
 				'/{(?:youtube|vimeo|embed):([^}]+)}/', 
