@@ -1,5 +1,5 @@
 <?php
-6
+
 class blog extends app
 {
 	

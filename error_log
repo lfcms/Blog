@@ -60,3 +60,4 @@
 [25-Mar-2014 18:02:34 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 137
 [25-Mar-2014 18:17:23 America/New_York] PHP Fatal error:  Call to undefined method blog_admin::TEST() in /home/bios/public_html/littlefoot/lf/system/app.class.php on line 63
 [25-Mar-2014 18:17:36 America/New_York] PHP Fatal error:  Call to undefined method blog_admin::TEST() in /home/bios/public_html/littlefoot/lf/system/app.class.php on line 63
+[13-Apr-2014 07:19:54 America/New_York] PHP Parse error:  syntax error, unexpected T_CLASS in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 3
