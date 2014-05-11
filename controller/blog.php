@@ -229,7 +229,7 @@ class blog extends app
 				".$this->request->api('getuid').", 
 				'desktop', 
 				0, 
-				'".mysql_real_escape_string(htmlentities($_POST['msg'], ENT_QUOTES))."', 
+				'".$this->db->escape(htmlentities($_POST['msg'], ENT_QUOTES))."', 
 				0, 
 				".intval($_POST['reply'])."
 			)
@@ -258,7 +258,7 @@ class blog extends app
 		";
 		$result = $this->db->query($sql);
 		
-		if(mysql_num_rows($result))
+		if($this->db->numrows($result))
 		{
 			$output['success'] = 0;
 		}
@@ -314,7 +314,7 @@ class blog extends app
 		";
 		$result = $this->db->query($sql);
 		
-		if(!mysql_num_rows($result))
+		if(!$this->db->numrows($result))
 		{
 			$output['success'] = 0;
 		}

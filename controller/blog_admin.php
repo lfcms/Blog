@@ -45,7 +45,7 @@ class blog_admin extends app
 		$where = '';
 		if($category != '') $where = " category = '".$category."' AND ";
 		
-		$posts = $this->db->fetchall("SELECT id, title, category FROM io_threads WHERE".$where." instance = '".mysql_real_escape_string($inst)."' ORDER BY category, id DESC");
+		$posts = $this->db->fetchall("SELECT id, title, category FROM io_threads WHERE".$where." instance = '".$this->db->escape($inst)."' ORDER BY category, id DESC");
 		
 		include 'view/blog_admin.view.php';
 	}
@@ -67,9 +67,9 @@ class blog_admin extends app
 			$result = $this->db->query("
 				UPDATE io_threads 
 				SET 
-					title 	= '".mysql_real_escape_string($_POST['title'])."', 
-					content = '".mysql_real_escape_string($_POST['content'])."',
-					category = '".mysql_real_escape_string($_POST['category'])."'
+					title 	= '".$this->db->escape($_POST['title'])."', 
+					content = '".$this->db->escape($_POST['content'])."',
+					category = '".$this->db->escape($_POST['category'])."'
 				WHERE id = ".$id
 			);
 			$msg = 'Saved.';
@@ -102,10 +102,10 @@ class blog_admin extends app
 				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
 				VALUES (
 					NULL, 
-					'".mysql_real_escape_string($this->inst)."', 
-					'".mysql_real_escape_string($_POST['category'])."',
-					'".mysql_real_escape_string($_POST['title'])."', 
-					'".mysql_real_escape_string($_POST['content'])."', 
+					'".$this->db->escape($this->inst)."', 
+					'".$this->db->escape($_POST['category'])."',
+					'".$this->db->escape($_POST['title'])."', 
+					'".$this->db->escape($_POST['content'])."', 
 					".$this->request->api('getuid').", 
 					0, NOW() 
 				)
@@ -152,7 +152,7 @@ class blog_admin extends app
 			$result = $this->db->query("
 				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
 				VALUES (
-					NULL, '".$this->inst."', '".mysql_real_escape_string($_POST['category'])."',
+					NULL, '".$this->inst."', '".$this->db->escape($_POST['category'])."',
 					'New Article', 
 					'New Content',
 					".$this->request->api('getuid').",
@@ -174,7 +174,7 @@ class blog_admin extends app
 			$result = $this->db->query("
 				 io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
 				VALUES (
-					NULL, '".mysql_real_escape_string($_POST['instance'])."', 'uncategorized',
+					NULL, '".$this->db->escape($_POST['instance'])."', 'uncategorized',
 					'New Article', 
 					'New Content',
 					".$this->request->api('getuid').",
@@ -192,7 +192,7 @@ class blog_admin extends app
 			$result = $this->db->query("
 				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
 				VALUES (
-					NULL, '".mysql_real_escape_string($_POST['instance'])."', 'uncategorized',
+					NULL, '".$this->db->escape($_POST['instance'])."', 'uncategorized',
 					'New Article', 
 					'New Content',
 					".$this->request->api('getuid').",
