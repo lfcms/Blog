@@ -22,9 +22,11 @@ function since($timestamp)
 ?>
 
 <h2>
-	<a href="%appurl%"><?php echo isset($this->ini['inst']) ? $this->ini['inst'] : 'Blog'; ?></a> 
+	<a href="%appurl%">Blog</a> 
 	/ <a href="%appurl%cat/<?=$thread['category'];?>"><?php echo $thread['category']; ?></a>
-	/ <?php echo $thread['title'] ?></h2>
+</h2>
+<h3><?php echo $thread['title'] ?></h3>
+
 <?php if($this->request->api('me') != 'anonymous' && false): ?>
 <form action="%appurl%mkthread/" method="post" class="add_thread">
 	<textarea name="input"></textarea>
@@ -46,14 +48,14 @@ function since($timestamp)
 			}
 		?>
 		<p><?=$thread['content'];?></p>
-		<br />
 		<span class="date">
 			Posted by <?php echo $thread['user'] ?> <?=since(strtotime($thread['date']));?>
 		</span>
+		
 		<ul class="msg">
 		<?php
 		
-		if(count($comments))
+		if(isset($comments) && count($comments))
 		{	
 			$like_disp = ''; // Display 'like' button if logged in
 			if($this->request->api('me') != 'anonymous')

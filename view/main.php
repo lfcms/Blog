@@ -25,6 +25,8 @@ function since($timestamp)
 <style type="text/css">
 #blog_categories { float: right; width: 200px; }
 #blog_posts { margin-right: 210px; }
+
+.app-blog .thread{ border-bottom: 1px solid #DDD; margin-bottom: 10px; padding: 0 0 10px;  }
 </style>
 
 <h2>
@@ -82,12 +84,11 @@ function since($timestamp)
 				<p><?=$post['content'];?></p>
 				<br style="clear:both;" />
 				<span class="date">
-					<a href="%appurl%view/<?php echo $id; ?>/">View Comments</a> | 
+					<a href="%appurl%view/<?php echo $id; ?>/">Permalink</a> | 
 					Posted by <?php echo $post['user'] ?> <?=since(strtotime($post['date']));?>
 				</span>			
 			</div>
 		</div>
-		<hr />
 		<?php endforeach; ?>
 	</div>
 	<?php endif; ?>
