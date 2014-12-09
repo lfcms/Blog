@@ -1,5 +1,5 @@
 <div class="blog-wrapper">
-	<h3>Instance: <a href="<?=$this->inst_base;?>"><?=$this->inst;?></a></h3>
+	<h3>Blog | <a href="<?=$this->inst_base;?>"><?=$this->inst;?></a></h3>
 	<div class="blog_admin_content">
 	<?php
 		$function = $vars[0];
