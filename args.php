@@ -1,15 +1,15 @@
 <?php
 
-$blogs = $this->db->fetchall('SELECT DISTINCT instance FROM io_threads');
+$blogs = $this->db->fetchall('SELECT DISTINCT category FROM blog_threads');
 
 $args = '';
 if(count($blogs))
 {
 	$args = '<select name="ini" id="">';
-	$args .= '<option value="">Show all blogs</option>';
-	$args .= '<optgroup label="Blogs:">';
+	$args .= '<option value="">Show from all categories</option>';
+	$args .= '<optgroup label="Categories:">';
 	foreach($blogs as $blog)
-		$args .= '<option value="inst='.$blog['instance'].'">'.$blog['instance'].'</option>';
+		$args .= '<option value="cat='.$blog['category'].'">'.$blog['category'].'</option>';
 	$args .= '</optgroup>';
 	$args .= '</select>';
 	

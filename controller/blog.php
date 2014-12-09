@@ -2,7 +2,6 @@
 
 class blog extends app
 {
-	
 	public function init($args)
 	{
 		$ini = $this->ini;
@@ -34,40 +33,41 @@ class blog extends app
 	
 	private function paginate($start = 0, $length = 3, $category = NULL)
 	{
-		
-		if(isset($this->ini['cat'])) $category = $this->ini['cat'];
-		
-		if(isset($this->ini['inst'])) 
-			$where[] = "t.instance = '".$this->ini['inst']."'";
-		if($category != NULL) 
-			$where[] = "t.category = '".$category."'";
+		/*$where = '';
+		if(isset($this->ini['cat'])) 
+		{
+			$category = $this->ini['cat'];
+			$where[] = "t.category = '".$this->ini['cat']."'";
+		}
 		
 		if(!isset($where)) $where = '';
 		else {
 			$where = 'WHERE '.implode(' AND ', $where);
+		}*/
+		
+		$where = '';
+		if(isset($this->ini['cat']))
+		{
+			$category = $this->ini['cat'];
+			$where = "WHERE blog_threads.category = '".$this->ini['cat']."'";
 		}
 		
 		$start = $start*$length;
 		// print blog articles
 		$sql = "
-			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.likes, t.category, u.display_name as user
-			FROM io_threads t
+			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.category, u.display_name as user
+			FROM blog_threads t
 				LEFT JOIN lf_users u ON t.owner_id = u.id
 			".$where."
 			ORDER BY t.date DESC
 			LIMIT ".$start.", ".$length."
 		";
 		
-		if($this->ini['inst'] != '')
-			$where = "WHERE instance = '".$this->ini['inst']."'";
-		else
-			$where = '';
-		
 		$this->db->query($sql);
 		while($row = $this->db->fetch())
 			$blog[$row['id']] = $row;
 		
-		$categories = $this->db->fetchall('SELECT * FROM io_threads '.$where);
+		$categories = $this->db->fetchall('SELECT * FROM blog_threads '.$where);
 		foreach($categories as $cat)
 		{
 			if(!isset($cat_count[$cat['category']])) $cat_count[$cat['category']] = 0;
@@ -83,22 +83,16 @@ class blog extends app
 			$out
 		);
 		
-		// put likes in key place
-		if($like != NULL) $like = array_flip($like);
-		
-		//Like replace
-		include 'model/like.php';
-		
 		$prev = '<';
 		$next = '>';
 		if($start > 0)
 			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'"><</a>';
 			
 		$where = '';
-		if(isset($this->ini['inst'])) 
-			$where = "WHERE instance = '".$this->ini['inst']."'";
+		if(isset($this->ini['cat'])) 
+			$where = "WHERE cat = '".$this->ini['cat']."'";
 			
-		$limit = $this->db->fetch('SELECT count(id) FROM io_threads '.$where);
+		$limit = $this->db->fetch('SELECT count(id) FROM blog_threads '.$where);
 		if($start + $length < $limit['count(id)'])
 			$next = '<a href="%appurl%p/'.($start/$length + 1).'">></a>';
 			
@@ -110,33 +104,35 @@ class blog extends app
 		$out = str_replace(
 			'<h2>Blog</h2>', 
 			'<h2>
-				'.$this->ini['inst'].' 
 				'.$prev.' '.$next.' '.$page.'
 			</h2>', 
 			$out
 		);
 		
-		$out = str_replace('<h2>Blog</h2>', '<h2>Blog  </h2>', $out);
 		echo $out;
+		echo '<div style="clear:both;"></div>';
 		echo $prev.' '.$next;
 	}
 	
 	public function view($vars)
 	{	
+		
 		//Thread
 		$thread = $this->db->fetch("
-			SELECT t.id, t.title, t.category, t.owner_id, t.content, t.date, t.likes, u.display_name as user
-			FROM io_threads t
+			SELECT t.id, t.title, t.category, t.owner_id, t.content, t.date, u.display_name as user
+			FROM blog_threads t
 			LEFT JOIN lf_users u ON t.owner_id = u.id
 			WHERE t.id = ".intval($vars[1])."
 		");
+		
+		if(!$thread) return '404 Post not found.';
 		
 		// get comments
 		$options = '';
 		$posts = array();
 		$sql = "
-			SELECT p.likes, p.msg_id as id, p.sender_id as owner, p.reply, p.body as content, p.date, u.user 
-			FROM io_messages p 
+			SELECT p.msg_id as id, p.sender_id as owner, p.reply, p.body as content, p.date, u.user 
+			FROM blog_comments p 
 			LEFT JOIN lf_users u ON p.sender_id = u.id 
 			WHERE p.parent_id = '".intval($vars[1])."'
 		";
@@ -179,7 +175,7 @@ class blog extends app
 			
 			include 'view/thread.php';
 			
-			include 'view/comments.php';
+			//include 'view/comments.php';
 			$out = ob_get_clean();
 			$out = preg_replace(
 				'/{(?:youtube|vimeo|embed):([^}]+)}/', 
@@ -187,14 +183,6 @@ class blog extends app
 				$out
 			);
 		}
-			
-		
-		// put likes in key place
-		if($like != NULL) $like = array_flip($like);
-		
-		//Like replace
-		include 'model/like.php';
-		
 		echo $out;
 	}
 	
@@ -207,7 +195,7 @@ class blog extends app
 		
 		$cwd = getcwd();
 		chdir('../comments');
-		$comments = $this->request->apploader('comments', 'blog/'.intval($_POST['inst']), $vars);
+		$comments = $this->request->apploader('comments', 'blog/'.intval($_POST['cat']), $vars);
 		$comments = str_replace('%appurl%', '%appurl%comment/', $comments);
 		chdir($cwd);
 		
@@ -221,14 +209,13 @@ class blog extends app
 		
 		
 		$sql = "
-			INSERT INTO io_messages (`msg_id`, `date`,`parent_id`,`sender_id`,`device`,`link`,`body`,`likes`,`reply`)
+			INSERT INTO blog_comments (`msg_id`, `date`,`parent_id`,`sender_id`,`device`,`link`,`body`,`reply`)
 			VALUES (
 				NULL, 
 				NOW(), 
 				".intval($vars[1]).",
 				".$this->request->api('getuid').", 
-				'desktop', 
-				0, 
+				'desktop',
 				'".$this->db->escape(htmlentities($_POST['msg'], ENT_QUOTES))."', 
 				0, 
 				".intval($_POST['reply'])."
@@ -242,129 +229,17 @@ class blog extends app
 		exit();
 	}
 	
-	public function like($vars)
-	{
-		header('HTTP/1.1 302 Moved Temporarily');
-		header('Location: '. $_SERVER['HTTP_REFERER']);
-		
-		if($this->request->api('me') == 'anonymous') exit();
-		
-		preg_match('/([mt])_like([0-9]+)/', $vars[1], $matches);
-		
-		$sql = "
-			SELECT * FROM io_like
-			WHERE user_id = ".$this->request->api('getuid')."
-			AND	link = '".$matches[0]."'
-		";
-		$result = $this->db->query($sql);
-		
-		if($this->db->numrows($result))
-		{
-			$output['success'] = 0;
-		}
-		else
-		{
-			$sql = "INSERT INTO io_like VALUES ( NULL, '".$matches[0]."', ".$this->request->api('getuid').", 'int')";
-			$result = $this->db->query($sql);
-			
-			$sql = "UPDATE io_";
-				
-			switch($matches[1])
-			{
-				case 't':
-					$sql .= "threads";
-					break;
-				case 'm':
-					$sql .= "messages";
-					break;
-			}
-				
-			$sql .= " SET likes=likes+1 WHERE ";
-			switch($matches[1])
-			{
-				case 't':
-					$sql .= "id";
-					break;
-				case 'm':
-					$sql .= "msg_id";
-					break;
-			}
-			$sql .= " = ".$matches[2];
-			$result = $this->db->query($sql);
-			$output['success'] = $result;
-			$output['refresh'] = true;
-		}
-		
-		exit();
-	}
-	
-	public function unlike($vars)
-	{
-		header('HTTP/1.1 302 Moved Temporarily');
-		header('Location: '. $_SERVER['HTTP_REFERER']);
-		
-		if($this->request->api('me') == 'anonymous') exit();
-		
-		preg_match('/([mt])_like([0-9]+)/', $vars[1], $matches);
-		
-		$sql = "
-			SELECT * FROM io_like
-			WHERE user_id = ".$this->request->api('getuid')."
-			AND	link = '".$matches[0]."'
-		";
-		$result = $this->db->query($sql);
-		
-		if(!$this->db->numrows($result))
-		{
-			$output['success'] = 0;
-		}
-		else
-		{
-			$sql = "DELETE FROM io_like WHERE user_id = ".$this->request->api('getuid')." AND link = '".$matches[0]."'";
-			$result = $this->db->query($sql);
-			
-			$sql = "UPDATE io_";
-				
-			switch($matches[1])
-			{
-				case 't':
-					$sql .= "threads";
-					break;
-				case 'm':
-					$sql .= "messages";
-					break;
-			}
-				
-			$sql .= " SET likes=likes-1 WHERE ";
-			switch($matches[1])
-			{
-				case 't':
-					$sql .= "id";
-					break;
-				case 'm':
-					$sql .= "msg_id";
-					break;
-			}
-			$sql .= " = ".$matches[2];
-			$result = $this->db->query($sql);
-			$output['success'] = $result;
-			$output['refresh'] = true;
-		}
-		
-		exit();
-	}
-	
 	public function sidebar($limit = 4)
 	{
 		$where = '';
-		if(isset($this->ini['inst'])) 
+		if(isset($this->ini['cat'])) 
 		{
-			$where .= " WHERE instance = '".$this->ini['inst']."'";
+			$where .= " WHERE cat = '".$this->ini['cat']."'";
 			if(isset($this->ini['cat'])) 
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$posts = $this->db->fetchall('SELECT t.*, u.display_name FROM io_threads t LEFT JOIN lf_users u ON t.owner_id = u.id'.$where.' ORDER BY t.date DESC LIMIT 3');
+		$posts = $this->db->fetchall('SELECT t.*, u.display_name FROM blog_threads t LEFT JOIN lf_users u ON t.owner_id = u.id'.$where.' ORDER BY t.date DESC LIMIT 3');
 		
 		foreach($posts as $post)
 		{
@@ -384,22 +259,23 @@ class blog extends app
 		<?php
 	}
 	
+	/*
 	public function grid($limit = 4)
 	{
 		$where = '';
-		if(isset($this->ini['inst'])) 
+		if(isset($this->ini['cat'])) 
 		{
-			$where .= " WHERE instance = '".$this->ini['inst']."'";
+			$where .= " WHERE cat = '".$this->ini['cat']."'";
 			if(isset($this->ini['cat'])) 
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$sql = "SELECT * FROM io_threads".$where." LIMIT 8";
+		$sql = "SELECT * FROM blog_threads".$where." LIMIT 8";
 		$this->db->query($sql);
 		$blog = $this->db->fetchall();
 
 		?>
-		<h2><?php echo $this->ini['inst']; ?></h2>
+		<h2><?php echo $this->ini['cat']; ?></h2>
 		<style type="text/css">
 			.overlay:hover p { display: block !important; }
 			.overlay:hover div span { display: none !important; }
@@ -430,23 +306,23 @@ class blog extends app
 			<?php
 		}
 		?><div style="clear: both"></div><?php
-	}
+	}*/
 	
 	public function latest($vars)
 	{
-		/*$sql = "SELECT * FROM io_threads";
+		/*$sql = "SELECT * FROM blog_threads";
 		$this->db->query($sql);
 		$blog = $this->db->fetchall();*/
 
 		$where = '';
-		if(isset($this->ini['inst']))
+		if(isset($this->ini['cat']))
 		{
-			$where = " WHERE instance = '".$this->ini['inst']."'";
+			$where = " WHERE cat = '".$this->ini['cat']."'";
 			if(isset($this->ini['cat']))
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$latest = $this->db->fetch("SELECT * FROM io_threads".$where." ORDER BY id DESC LIMIT 1");
+		$latest = $this->db->fetch("SELECT * FROM blog_threads".$where." ORDER BY id DESC LIMIT 1");
 		
 		preg_match('/"([^"]+.(?:jpg|png|gif|JPG|PNG|GIF))"/', $latest['content'], $match);
 		

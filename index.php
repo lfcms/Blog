@@ -1,1 +1,1 @@
-<?php echo $this->apploader('blog', $_app['ini']); ?>
+<?php echo $this->lf->mvc('blog', $_app['ini']);

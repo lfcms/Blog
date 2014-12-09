@@ -57,12 +57,11 @@ function since($timestamp)
 						<p><?=$post['content'];?></p>
 						<br style="clear:both;" />
 						<span class="date">
-							<a href="%appurl%view/<?php echo $id; ?>/">View Comments</a> | 
+							<a href="%appurl%view/<?php echo $id; ?>/">Permalink</a> | 
 							Posted by <?php echo $post['user'] ?> <?=since(strtotime($post['date']));?>
 						</span>			
 					</div>
 				</div>
-				<hr />
 				<?php endforeach; ?>
 			</div>
 			<?php endif; ?>
@@ -84,8 +83,7 @@ function since($timestamp)
 					if($category != NULL)
 					{
 						echo str_replace('<li><a href="%appurl%cat/'.$category.'">', '<li class="active"><a href="%appurl%cat/'.$category.'">', ob_get_clean());
-					}
-					
+					}					
 				} else { ?>
 				<li>No categories</li>
 				<?php } ?>

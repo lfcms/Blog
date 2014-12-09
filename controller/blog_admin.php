@@ -1,32 +1,18 @@
 <link href="%relbase%lf/apps/blog/css/blog_admin.styles.css" rel="stylesheet">
 <?php
- 
+
 class blog_admin extends app
 {
 	public function main($vars)
 	{
-		$result = $this->db->fetchall('SELECT DISTINCT instance FROM io_threads ORDER BY instance');
-		
-		include 'view/blog_admin.main.php';
-	}
-	
-	public function inst($vars) // needs to be converted to _router(), home()
-	{
-		if(!isset($vars[1])) return $this->main();
-		
-		$inst = urldecode($vars[1]);
-		$vars = array_slice($vars, 2);
-		$this->inst = $inst;
-		$this->inst_base = $this->request->base.'apps/manage/blog/inst/'.urlencode($inst).'/';
-		
-		$cats = $this->db->fetchall("SELECT DISTINCT category FROM io_threads WHERE instance = '".$inst."' ORDER BY category");
+		$cats = $this->db->fetchall("SELECT DISTINCT category FROM blog_threads ORDER BY category");
 		if(!$cats) 
-			redirect302($this->request->base.'apps/manage/blog/');
+			$this->cats[] = 'No categories';
 		else
 			foreach($cats as $cat)
 				$this->cats[] = $cat['category'];
 		
-		if(!isset($vars[0])) $vars[0] = 'view';
+		if($vars[0] == '') $vars[0] = 'view';
 		
 		include 'view/blog_admin.home.php';
 	}
@@ -38,34 +24,27 @@ class blog_admin extends app
 	}
 	
 	private function view($vars, $category = '')
-	{
-		$inst = $this->inst;
-		$inst_base = $this->inst_base;
-		
+	{		
 		$where = '';
-		if($category != '') $where = " category = '".$category."' AND ";
+		if($category != '') $where = "WHERE category = '".$category."'";
 		
-		$posts = $this->db->fetchall("SELECT id, title, category FROM io_threads WHERE".$where." instance = '".$this->db->escape($inst)."' ORDER BY category, id DESC");
+		$posts = $this->db->fetchall("SELECT id, title, category FROM blog_threads ".$where." ORDER BY category, id DESC");
 		
 		include 'view/blog_admin.view.php';
 	}
 	
 	private function edit($vars)
-	{
-		$inst = $this->inst;
-		$inst_base = $this->inst_base;
-		
+	{		
 		$id = intval($vars[1]);
 		if($id <= 0) return;
 		
 		$msg = '';
 		if(count($_POST) > 0)
 		{
-			
 			if($_POST['newcat'] != '') $_POST['category'] = $_POST['newcat'];
 			
 			$result = $this->db->query("
-				UPDATE io_threads 
+				UPDATE blog_threads 
 				SET 
 					title 	= '".$this->db->escape($_POST['title'])."', 
 					content = '".$this->db->escape($_POST['content'])."',
@@ -76,7 +55,7 @@ class blog_admin extends app
 			redirect302();
 		}
 		
-		$result = $this->db->query("SELECT * FROM io_threads WHERE id = ".$id);
+		$result = $this->db->query("SELECT * FROM blog_threads WHERE id = ".$id);
 		$row = $this->db->fetch($result);
 		
 		$cats = $this->cats;
@@ -99,29 +78,25 @@ class blog_admin extends app
 			if($_POST['newcat'] != '') $_POST['category'] = $_POST['newcat'];
 			
 			$result = $this->db->query("
-				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
+				INSERT INTO blog_threads (`id`, `category`, `title`, `content`, `owner_id`, `date`)
 				VALUES (
 					NULL, 
-					'".$this->db->escape($this->inst)."', 
 					'".$this->db->escape($_POST['category'])."',
 					'".$this->db->escape($_POST['title'])."', 
 					'".$this->db->escape($_POST['content'])."', 
 					".$this->request->api('getuid').", 
-					0, NOW() 
+					NOW() 
 				)
 			");
-			$msg = 'Page Created.';
+			$id = $this->db->last();
 		}
 		
-		redirect302($this->inst_base);
+		redirect302($this->lf->appurl.'edit/'.$id);
 	}
 	
 	private function newarticle($vars)
-	{
-		// else { didnt post }
-		$inst_base = $this->inst_base;
-		$inst = $this->inst;
-		
+	{		
+		$cat_options = '';
 		foreach($this->cats as $cat)
 		{
 			$select = '';
@@ -139,9 +114,9 @@ class blog_admin extends app
 		if($id <= 0) return;
 
 		// Remove thread and comments
-		$this->db->query("DELETE FROM io_threads WHERE instance = '".$this->inst."' AND id = ".$id);		
+		$this->db->query("DELETE FROM blog_threads AND id = ".$id);		
 		if($this->db->affected() == 1)
-			$this->db->query("DELETE FROM io_messages WHERE parent_id = ".$id);
+			$this->db->query("DELETE FROM blog_messages WHERE parent_id = ".$id);
 		
 		redirect302();
 	}
@@ -150,53 +125,12 @@ class blog_admin extends app
 	{
 		if(count($_POST) > 0)
 			$result = $this->db->query("
-				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
+				INSERT INTO blog_threads (`id`, `category`, `title`, `content`, `owner_id`, `date`)
 				VALUES (
-					NULL, '".$this->inst."', '".$this->db->escape($_POST['category'])."',
-					'New Article', 
+					NULL, '".$this->db->escape($_POST['category'])."',
+					'New ".$this->db->escape($_POST['category'])." article', 
 					'New Content',
 					".$this->request->api('getuid').",
-					0,
-					NOW() 
-				)
-			");
-		
-		redirect302();
-	}
-	
-	public function rminst($vars)
-	{
-		echo 'Instance delete isnt implemented yet. To remove an instance, delete all posts inside it.';
-		//$this->main();
-		//redirect302();
-		/*
-		if(isset($vars[1]))
-			$result = $this->db->query("
-				 io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
-				VALUES (
-					NULL, '".$this->db->escape($_POST['instance'])."', 'uncategorized',
-					'New Article', 
-					'New Content',
-					".$this->request->api('getuid').",
-					0,
-					NOW() 
-				)
-			");
-		
-		redirect302();*/
-	}
-	
-	public function addinst($vars)
-	{
-		if(count($_POST) > 0)
-			$result = $this->db->query("
-				INSERT INTO io_threads (`id`, `instance`, `category`, `title`, `content`, `owner_id`, `likes`, `date`)
-				VALUES (
-					NULL, '".$this->db->escape($_POST['instance'])."', 'uncategorized',
-					'New Article', 
-					'New Content',
-					".$this->request->api('getuid').",
-					0,
 					NOW() 
 				)
 			");
