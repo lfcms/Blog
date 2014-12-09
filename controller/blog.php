@@ -86,7 +86,7 @@ class blog extends app
 		$prev = 'Newer';
 		$next = 'Older';
 		if($start > 0)
-			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'"><</a>';
+			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'">'.$prev.'</a>';
 			
 		$where = '';
 		if(isset($this->ini['cat'])) 
@@ -94,7 +94,7 @@ class blog extends app
 			
 		$limit = $this->db->fetch('SELECT count(id) FROM io_threads '.$where);
 		if($start + $length < $limit['count(id)'])
-			$next = '<a href="%appurl%p/'.($start/$length + 1).'">></a>';
+			$next = '<a href="%appurl%p/'.($start/$length + 1).'">'.$next.'</a>';
 			
 		if($start/$length > 0)
 			$page =  '/ Page '.($start/$length + 1);
