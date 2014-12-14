@@ -48,15 +48,15 @@ class blog extends app
 		$where = '';
 		if(isset($this->ini['cat']))
 		{
-			$category = $this->ini['cat'];
-			$where = "WHERE io_threads.category = '".$this->ini['cat']."'";
+			$category = $this->ini['cat'];\
+			$where = "WHERE blog_threads.category = '".$this->ini['cat']."'";\
 		}
 		
 		$start = $start*$length;
 		// print blog articles
 		$sql = "
-			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.category, u.display_name as user
-			FROM io_threads t
+			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.category, u.display_name as user\
+			FROM blog_threads t
 				LEFT JOIN lf_users u ON t.owner_id = u.id
 			".$where."
 			ORDER BY t.date DESC
@@ -67,7 +67,7 @@ class blog extends app
 		while($row = $this->db->fetch())
 			$blog[$row['id']] = $row;
 		
-		$categories = $this->db->fetchall('SELECT * FROM io_threads '.$where);
+		$categories = $this->db->fetchall('SELECT * FROM blog_threads '.$where);
 		foreach($categories as $cat)
 		{
 			if(!isset($cat_count[$cat['category']])) $cat_count[$cat['category']] = 0;
@@ -85,6 +85,7 @@ class blog extends app
 		
 		$prev = 'Newer';
 		$next = 'Older';
+		
 		if($start > 0)
 			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'">'.$prev.'</a>';
 			
@@ -92,7 +93,7 @@ class blog extends app
 		if(isset($this->ini['cat'])) 
 			$where = "WHERE cat = '".$this->ini['cat']."'";
 			
-		$limit = $this->db->fetch('SELECT count(id) FROM io_threads '.$where);
+		$limit = $this->db->fetch('SELECT count(id) FROM blog_threads '.$where);
 		if($start + $length < $limit['count(id)'])
 			$next = '<a href="%appurl%p/'.($start/$length + 1).'">'.$next.'</a>';
 			
@@ -109,7 +110,6 @@ class blog extends app
 			$out
 		);
 		
-		
 		echo $out;
 		echo '<div style="clear:both;"></div>';
 		echo $prev.' | '.$next;
@@ -121,7 +121,7 @@ class blog extends app
 		//Thread
 		$thread = $this->db->fetch("
 			SELECT t.id, t.title, t.category, t.owner_id, t.content, t.date, u.display_name as user
-			FROM io_threads t
+			FROM blog_threads t
 			LEFT JOIN lf_users u ON t.owner_id = u.id
 			WHERE t.id = ".intval($vars[1])."
 		");
@@ -132,8 +132,8 @@ class blog extends app
 		$options = '';
 		$posts = array();
 		$sql = "
-			SELECT p.msg_id as id, p.sender_id as owner, p.reply, p.body as content, p.date, u.user 
-			FROM io_comments p 
+			SELECT p.msg_id as id, p.sender_id as owner, p.reply, p.body as content, p.date, u.user
+			FROM blog_comments p 
 			LEFT JOIN lf_users u ON p.sender_id = u.id 
 			WHERE p.parent_id = '".intval($vars[1])."'
 		";
@@ -210,7 +210,7 @@ class blog extends app
 		
 		
 		$sql = "
-			INSERT INTO io_comments (`msg_id`, `date`,`parent_id`,`sender_id`,`device`,`link`,`body`,`reply`)
+			INSERT INTO blog_comments (`msg_id`, `date`,`parent_id`,`sender_id`,`device`,`link`,`body`,`reply`)
 			VALUES (
 				NULL, 
 				NOW(), 
@@ -240,7 +240,7 @@ class blog extends app
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$posts = $this->db->fetchall('SELECT t.*, u.display_name FROM io_threads t LEFT JOIN lf_users u ON t.owner_id = u.id'.$where.' ORDER BY t.date DESC LIMIT 3');
+		$posts = $this->db->fetchall('SELECT t.*, u.display_name FROM blog_threads t LEFT JOIN lf_users u ON t.owner_id = u.id'.$where.' ORDER BY t.date DESC LIMIT 3');
 		
 		foreach($posts as $post)
 		{
@@ -271,7 +271,7 @@ class blog extends app
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$sql = "SELECT * FROM io_threads".$where." LIMIT 8";
+		$sql = "SELECT * FROM blog_threads".$where." LIMIT 8";
 		$this->db->query($sql);
 		$blog = $this->db->fetchall();
 
@@ -311,7 +311,7 @@ class blog extends app
 	
 	public function latest($vars)
 	{
-		/*$sql = "SELECT * FROM io_threads";
+		/*$sql = "SELECT * FROM blog_threads";
 		$this->db->query($sql);
 		$blog = $this->db->fetchall();*/
 
@@ -323,7 +323,7 @@ class blog extends app
 				$where .= " AND category = '".$this->ini['cat']."'";
 		}
 		
-		$latest = $this->db->fetch("SELECT * FROM io_threads".$where." ORDER BY id DESC LIMIT 1");
+		$latest = $this->db->fetch("SELECT * FROM blog_threads".$where." ORDER BY id DESC LIMIT 1");
 		
 		preg_match('/"([^"]+.(?:jpg|png|gif|JPG|PNG|GIF))"/', $latest['content'], $match);
 		
