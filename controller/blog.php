@@ -45,17 +45,17 @@ class blog extends app
 			$where = 'WHERE '.implode(' AND ', $where);
 		}*/
 		
-		$where = '';
+		$where = ''; 
 		if(isset($this->ini['cat']))
 		{
-			$category = $this->ini['cat'];\
-			$where = "WHERE blog_threads.category = '".$this->ini['cat']."'";\
+			$category = $this->ini['cat'];
+			$where = "WHERE blog_threads.category = '".$this->ini['cat']."'";
 		}
 		
 		$start = $start*$length;
 		// print blog articles
 		$sql = "
-			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.category, u.display_name as user\
+			SELECT t.id, t.title, t.owner_id, t.content, t.date, t.category, u.display_name as user
 			FROM blog_threads t
 				LEFT JOIN lf_users u ON t.owner_id = u.id
 			".$where."

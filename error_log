@@ -66,3 +66,17 @@
 [24-Jun-2014 21:08:43 America/New_York] PHP Fatal error:  Call to undefined method Database::escape() in /home/wightdev/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 48
 [24-Jun-2014 21:09:06 America/New_York] PHP Fatal error:  Call to undefined method Database::escape() in /home/wightdev/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 48
 [24-Jun-2014 21:09:21 America/New_York] PHP Fatal error:  Call to undefined method Database::escape() in /home/wightdev/public_html/littlefoot/lf/apps/blog/controller/blog_admin.php on line 48
+[14-Dec-2014 14:32:54 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:14 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:15 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:16 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:17 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:17 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:20 America/New_York] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting T_STRING in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 52
+[14-Dec-2014 14:33:28 America/New_York] PHP Notice:  Trying to get property of non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 119
+[14-Dec-2014 14:33:28 America/New_York] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 121
+[14-Dec-2014 14:33:29 America/New_York] PHP Notice:  Trying to get property of non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 119
+[14-Dec-2014 14:33:29 America/New_York] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 121
+[14-Dec-2014 14:33:30 America/New_York] PHP Notice:  Trying to get property of non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 119
+[14-Dec-2014 14:33:30 America/New_York] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 121
+[14-Dec-2014 14:33:42 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
