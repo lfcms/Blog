@@ -34,3 +34,5 @@ CREATE TABLE `blog_like` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
+
+RENAME TABLE io_threads TO blog_threads, io_messages TO blog_messages;
