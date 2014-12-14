@@ -1,4 +1,4 @@
-CREATE TABLE `io_threads` (
+CREATE TABLE IF NOT EXISTS `blog_threads` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `date` varchar(20) NOT NULL,
   `owner_id` int(5) NOT NULL,
@@ -8,13 +8,13 @@ CREATE TABLE `io_threads` (
   `content` text NOT NULL,
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- In case you are using an old blog table style
 ALTER TABLE io_threads ADD category varchar(128) DEFAULT 'uncategorized';
-anALTER TABLE io_threads ADD instance varchar(128) DEFAULT 'default';
+ALTER TABLE io_threads ADD instance varchar(128) DEFAULT 'default';
 
-CREATE TABLE `io_messages` (
+CREATE TABLE IF NOT EXISTS `blog_messages` (
   `msg_id` int(5) NOT NULL AUTO_INCREMENT,
   `date` varchar(20) NOT NULL,
   `parent_id` int(5) NOT NULL,
@@ -27,11 +27,4 @@ CREATE TABLE `io_messages` (
   PRIMARY KEY (`msg_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `io_like` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `link` varchar(50) NOT NULL,
-  `user_id` int(5) NOT NULL,
-  `scope` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
+RENAME TABLE io_threads TO blog_threads, io_messages TO blog_messages;
