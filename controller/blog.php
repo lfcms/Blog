@@ -138,8 +138,10 @@ class blog extends app
 			WHERE p.parent_id = '".intval($vars[1])."'
 		";
 		
-		$this->db->query($sql);
-		while($row = $this->db->fetch())
+		//$this->db->query($sql);
+		//while($row = $this->db->fetch())
+		$data = $this->db->fetchall($sql);
+		foreach($data as $row)
 		{
 			if($row['owner'] == 0) $row['user'] = '[deleted]';
 			$posts[$row['reply']][] = $row;
