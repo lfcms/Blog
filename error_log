@@ -80,3 +80,20 @@
 [14-Dec-2014 14:33:30 America/New_York] PHP Notice:  Trying to get property of non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 119
 [14-Dec-2014 14:33:30 America/New_York] PHP Fatal error:  Call to a member function fetch_assoc() on a non-object in /home/bios/public_html/littlefoot/lf/system/db.class.php on line 121
 [14-Dec-2014 14:33:42 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[17-Dec-2014 10:22:10 America/New_York] PHP Fatal error:  Call to undefined method blog_admin::inst() in /home/bios/public_html/littlefoot/lf/apps/blog/view/blog_admin.home.php on line 5
+[22-Dec-2014 14:58:22 America/New_York] PHP Warning:  include(view/main.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 78
+[22-Dec-2014 14:58:22 America/New_York] PHP Warning:  include(view/main.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 78
+[22-Dec-2014 14:58:22 America/New_York] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'view/main.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php:/home/bios/public_html/littlefoot/lf/lib:/home/bios/public_html/littlefoot/lf/system/lib') in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 78
+[22-Dec-2014 14:58:35 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[22-Dec-2014 14:58:40 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[22-Dec-2014 15:01:37 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[22-Dec-2014 15:01:38 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[22-Dec-2014 15:10:06 America/New_York] PHP Parse error:  syntax error, unexpected '=' in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 111
+[22-Dec-2014 15:10:18 America/New_York] PHP Parse error:  syntax error, unexpected ';' in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 114
+[22-Dec-2014 15:11:13 America/New_York] PHP Parse error:  syntax error, unexpected ';' in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 114
+[22-Dec-2014 15:11:21 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 180
+[22-Dec-2014 15:11:22 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 180
+[22-Dec-2014 15:11:23 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 180
+[22-Dec-2014 15:11:24 America/New_York] PHP Parse error:  syntax error, unexpected $end in /home/bios/public_html/littlefoot/lf/apps/blog/controller/blog.php on line 180
+[22-Dec-2014 15:11:46 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40
+[22-Dec-2014 15:15:16 America/New_York] PHP Notice:  Undefined variable: id in /home/bios/public_html/littlefoot/lf/apps/blog/view/thread.php on line 40

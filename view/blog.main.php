@@ -1,5 +1,37 @@
 <?php
 
+$prev = 'Newer';
+		$next = 'Older';
+		
+		if($start > 0)
+			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'">'.$prev.'</a>';
+			
+		$where = '';
+		if(isset($this->ini['cat'])) 
+			$where = "WHERE cat = '".$this->ini['cat']."'";
+			
+		$limit = $this->db->fetch('SELECT count(id) FROM blog_threads '.$where);
+		if($start + $length < $limit['count(id)'])
+			$next = '<a href="%appurl%p/'.($start/$length + 1).'">'.$next.'</a>';
+			
+		if($start/$length > 0)
+			$page =  '/ Page '.($start/$length + 1);
+		else
+			$page = '';
+			
+		/*$out = str_replace(
+			'<h2>Blog</h2>', 
+			'<h2>
+				'.$prev.' '.$next.' '.$page.'
+			</h2>', 
+			$out
+		);*/
+		
+		//echo $out;
+		
+		
+		
+
 function since($timestamp)
 {
 	$timestamp = time() - $timestamp;
@@ -83,7 +115,8 @@ function since($timestamp)
 					if($category != NULL)
 					{
 						echo str_replace('<li><a href="%appurl%cat/'.$category.'">', '<li class="active"><a href="%appurl%cat/'.$category.'">', ob_get_clean());
-					}					
+					}			
+					else echo ob_get_clean();
 				} else { ?>
 				<li>No categories</li>
 				<?php } ?>
@@ -91,3 +124,8 @@ function since($timestamp)
 		</div>
 	</div>
 </div>
+
+<?php
+
+echo '<div style="clear:both;"></div>';
+echo $prev.' | '.$next;
