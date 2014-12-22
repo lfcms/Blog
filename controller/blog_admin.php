@@ -23,6 +23,11 @@ class blog_admin extends app
 		$this->view($vars, $vars[1]);
 	}
 	
+	public function editcat($args)
+	{
+		include 'view/blog_admin.editcat.php';
+	}
+	
 	private function view($vars, $category = '')
 	{		
 		$where = '';
