@@ -13,9 +13,6 @@ class blog extends app
 	//default
 	public function main($vars)
 	{
-		/*if(isset($this->ini['format']) && $this->ini['format'] == 'grid')
-			$this->grid();
-		else*/ // This should be a plugin or setting in MySQL
 			$this->paginate();
 	}
 	
@@ -32,19 +29,7 @@ class blog extends app
 	}
 	
 	private function paginate($start = 0, $length = 3, $category = NULL)
-	{
-		/*$where = '';
-		if(isset($this->ini['cat'])) 
-		{
-			$category = $this->ini['cat'];
-			$where[] = "t.category = '".$this->ini['cat']."'";
-		}
-		
-		if(!isset($where)) $where = '';
-		else {
-			$where = 'WHERE '.implode(' AND ', $where);
-		}*/
-		
+	{	
 		$where = ''; 
 		if(isset($this->ini['cat']))
 		{
@@ -67,7 +52,7 @@ class blog extends app
 		while($row = $this->db->fetch())
 			$blog[$row['id']] = $row;
 		
-		$categories = $this->db->fetchall('SELECT * FROM blog_threads '.$where);
+		$categories = $this->db->fetchall('SELECT DISTINCT category FROM blog_threads '.$where);
 		foreach($categories as $cat)
 		{
 			if(!isset($cat_count[$cat['category']])) $cat_count[$cat['category']] = 0;
@@ -75,44 +60,14 @@ class blog extends app
 		}
 		
 		ob_start();
-		include 'view/main.php';
-		$out = ob_get_clean();
-		$out = preg_replace(
+		
+		include 'view/blog.main.php';
+		
+		echo preg_replace(
 			'/{(?:youtube|vimeo|embed):([^}]+)}/', 
 			'<iframe src="$1" width="100%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
-			$out
+			ob_get_clean()
 		);
-		
-		$prev = 'Newer';
-		$next = 'Older';
-		
-		if($start > 0)
-			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'">'.$prev.'</a>';
-			
-		$where = '';
-		if(isset($this->ini['cat'])) 
-			$where = "WHERE cat = '".$this->ini['cat']."'";
-			
-		$limit = $this->db->fetch('SELECT count(id) FROM blog_threads '.$where);
-		if($start + $length < $limit['count(id)'])
-			$next = '<a href="%appurl%p/'.($start/$length + 1).'">'.$next.'</a>';
-			
-		if($start/$length > 0)
-			$page =  '/ Page '.($start/$length + 1);
-		else
-			$page = '';
-			
-		$out = str_replace(
-			'<h2>Blog</h2>', 
-			'<h2>
-				'.$prev.' '.$next.' '.$page.'
-			</h2>', 
-			$out
-		);
-		
-		echo $out;
-		echo '<div style="clear:both;"></div>';
-		echo $prev.' | '.$next;
 	}
 	
 	public function view($vars)
@@ -152,84 +107,14 @@ class blog extends app
 				</options>
 			';
 		}
-		
-		/*ob_start();
-		include('view/comments.php');
-		$comments = ob_get_clean();*/
 
 		ob_start();
-		if(is_dir('../comments'))
-		{
-			$cwd = getcwd();
-			chdir('../comments');
-			$comments = $this->request->apploader('comments', 'blog/'.intval($vars[1]));
-			$comments = str_replace('%appurl%', '%appurl%comment/', $comments);
-			chdir($cwd);
-			
-			include 'view/thread.php';
-			$out = ob_get_clean();
-			$out = preg_replace(
-				'/{(?:youtube|vimeo|embed):([^}]+)}/', 
-				'<iframe src="$1" width="100%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
-				$out
-			);
-		} else {
-		 
-			
-			include 'view/thread.php';
-			
-			//include 'view/comments.php';
-			$out = ob_get_clean();
-			$out = preg_replace(
-				'/{(?:youtube|vimeo|embed):([^}]+)}/', 
-				'<iframe src="$1" width="100%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
-				$out
-			);
-		}
-		echo $out;
-	}
-	
-	public function comment($vars)
-	{
-		
-		$vars = array_slice($vars, 1);
-		print_r($vars);
-		print_r($_POST);
-		
-		$cwd = getcwd();
-		chdir('../comments');
-		$comments = $this->request->apploader('comments', 'blog/'.intval($_POST['cat']), $vars);
-		$comments = str_replace('%appurl%', '%appurl%comment/', $comments);
-		chdir($cwd);
-		
-		echo $comments;
-	}
-	
-	public function mkpost($vars)
-	{
-		// Authenticated users only
-		if($this->request->api('me') == 'anonymous') exit();
-		
-		
-		$sql = "
-			INSERT INTO blog_comments (`msg_id`, `date`,`parent_id`,`sender_id`,`device`,`link`,`body`,`reply`)
-			VALUES (
-				NULL, 
-				NOW(), 
-				".intval($vars[1]).",
-				".$this->request->api('getuid').", 
-				'desktop',
-				'".$this->db->escape(htmlentities($_POST['msg'], ENT_QUOTES))."', 
-				0, 
-				".intval($_POST['reply'])."
-			)
-		";
-		
-		$this->db->query($sql);
-		
-		header('HTTP/1.1 302 Moved Temporarily');
-		header('Location: '. $_SERVER['HTTP_REFERER']);
-		exit();
+		include 'view/blog.view.php';
+		echo preg_replace(
+			'/{(?:youtube|vimeo|embed):([^}]+)}/', 
+			'<iframe src="$1" width="100%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+			ob_get_clean()
+		);
 	}
 	
 	public function sidebar($limit = 4)
@@ -262,55 +147,6 @@ class blog extends app
 		<?php
 	}
 	
-	/*
-	public function grid($limit = 4)
-	{
-		$where = '';
-		if(isset($this->ini['cat'])) 
-		{
-			$where .= " WHERE cat = '".$this->ini['cat']."'";
-			if(isset($this->ini['cat'])) 
-				$where .= " AND category = '".$this->ini['cat']."'";
-		}
-		
-		$sql = "SELECT * FROM blog_threads".$where." LIMIT 8";
-		$this->db->query($sql);
-		$blog = $this->db->fetchall();
-
-		?>
-		<h2><?php echo $this->ini['cat']; ?></h2>
-		<style type="text/css">
-			.overlay:hover p { display: block !important; }
-			.overlay:hover div span { display: none !important; }
-		</style>
-		<?php
-
-		// Print blog posts
-		foreach($blog as $post)
-		{
-			preg_match('/"([^"]+.(?:jpg|png|gif|JPG|PNG|GIF))"/', $post['content'], $match);
-			
-			$bg = 'http://placehold.it/200x200'; //default
-			if(isset($match[1]))
-				$bg = $match[1];
-
-			?>
-			<div style="width: 200px; background: #000; overflow: hidden; margin-bottom: 10px; float: left; margin-right: 10px;" class="overlay" >
-				<a href="%appurl%view/<?=$post['id'];?>/">
-					<p style="z-index: 100; font-weight: bold; position: absolute; float: left; color: white; width: 130px; font-size: 15px; display: none; background: url(%relbase%lf/media/transparent.png); width: 200px; height: 200px;"><span style="display: block; padding: 20px;"><?php echo date('M d, Y',strtotime($post['date'])); ?></span></p>
-				</a>
-				<div style="height: 200px">
-					<span style="background: url(%relbase%lf/media/transparent.png); display: block; position: absolute; z-index: 99; float: left; color: white; padding: 20px; width: 160px; font-size: 16px;">
-						<?=$post['title'];?>
-					</span>
-					<img height="200px" src="<?=$bg;?>" alt="" />
-				</div>
-			</div>
-			<?php
-		}
-		?><div style="clear: both"></div><?php
-	}*/
-	
 	public function latest($vars)
 	{
 		/*$sql = "SELECT * FROM blog_threads";
@@ -341,40 +177,6 @@ class blog extends app
 			<a href="%baseurl%latest/view/<?php echo $latest['id']; ?>/"><?php echo $latest['title']; ?></a>
 		</article>
 		<?php
-		
-		/*
-		?>
-		<h2>Blog Posts</h2>
-		<style type="text/css">
-			.overlay:hover p { display: block !important; }
-			.overlay:hover div span { display: none !important; }
-		</style>
-		<?php
-
-		// Print blog posts
-		foreach($blog as $post)
-		{
-			preg_match('/"([^"]+.jpg)"/', $post['content'], $match);
-			
-			$bg = 'http://placehold.it/200x200'; //default
-			if(isset($match[1]))
-				$bg = $match[1];
-
-			?>
-			<div style="width: 200px; background: #000; overflow: hidden; margin-bottom: 10px; float: left; margin-right: 10px;" class="overlay" >
-				<a href="%appurl%view/<?=$post['id'];?>/">
-					<p style="z-index: 100; font-weight: bold; position: absolute; float: left; color: white; width: 130px; font-size: 15px; display: none; background: url(%relbase%lf/media/transparent.png); width: 200px; height: 200px;"><span style="display: block; padding: 20px;"><?php echo date('M d, Y',strtotime($post['date'])); ?></span></p>
-				</a>
-				<div style="height: 200px">
-					<span style="background: url(%relbase%lf/media/transparent.png); display: block; position: absolute; z-index: 99; float: left; color: white; padding: 20px; width: 160px; font-size: 16px;">
-						<?=$post['title'];?>
-					</span>
-					<img height="200px" src="<?=$bg;?>" alt="" />
-				</div>
-			</div>
-			<?php
-		}
-		?><div style="clear: both"></div><?php*/
 	}
 }
 

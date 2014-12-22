@@ -20,7 +20,13 @@ function since($timestamp)
 	return $ret;
 }
 ?>
-<h2><a href="%appurl%">Blog</a> / View Post</h2>
+
+<h2>
+	<a href="%appurl%">Blog</a> 
+	/ <a href="%appurl%cat/<?=$thread['category'];?>"><?php echo $thread['category']; ?></a>
+</h2>
+<h3><?php echo $thread['title'] ?></h3>
+
 <?php if($this->request->api('me') != 'anonymous' && false): ?>
 <form action="%appurl%mkthread/" method="post" class="add_thread">
 	<textarea name="input"></textarea>
@@ -30,12 +36,10 @@ function since($timestamp)
 <?php endif; if(!count($thread)): ?>
 <p>No threads to show</p>
 <?php else: ?>
-<?php $like = array(); /* loop through blog posts */ ?>
+<?php if(!isset($like)) $like = array(); /* loop through blog posts */ ?>
 <div id="thread_<?php echo $id; ?>" class="thread">
 	<div class="t_head">
-		<?php if($thread['owner_id'] == $this->request->api('getuid')): /* show delete button */ ?>
-		<a href="%appurl%rmthread/<?php echo $thread['id']; ?>/" method="post" class="removethread hrefapi">X</a>
-		<?php endif; 
+		<?php
 			$like_disp = ''; // Display 'like' button if logged in
 			if($this->request->api('me') != 'anonymous')
 			{
@@ -43,16 +47,15 @@ function since($timestamp)
 				$like[] = 't_like'.$thread['id'];
 			}
 		?>
-		<h4><?php echo $thread['title'] ?></h4>
 		<p><?=$thread['content'];?></p>
-		<br />
 		<span class="date">
-			<?=' '.$like_disp; ?> +<?=$thread['likes'];?> Promotes | Posted by <?php echo $thread['user'] ?> <?=since(strtotime($thread['date']));?>
+			Posted by <?php echo $thread['user'] ?> <?=since(strtotime($thread['date']));?>
 		</span>
+		
 		<ul class="msg">
 		<?php
 		
-		if(count($comments))
+		if(isset($comments) && count($comments))
 		{	
 			$like_disp = ''; // Display 'like' button if logged in
 			if($this->request->api('me') != 'anonymous')
@@ -70,6 +73,10 @@ function since($timestamp)
 			
 			// Print replies
 			$options = '';
+			
+			echo $comments;
+			
+			if(false)
 			foreach($comments as $comment)
 			{
 				if($this->request->api('me') != 'anonymous')
@@ -112,26 +119,8 @@ function since($timestamp)
 				';
 			}
 		}
-		else
-		{
-			?>
-			<li class="msg_0">
-				<span class="msg_body">No Comments</span>
-			</li>
-			<?php
-		}
 		?>
 		</ul>
-		<span class="msg_date"><?php echo date("F j, Y, g:i a"); ?></span>
-		<form action="%appurl%mkpost/" method="post" class="add_post">
-			<select name="at" class="at">
-				<option>Reply to thread</option>
-				<?=$options;?>
-			</select>
-			<input type="text" name="input" />
-			<input type="submit" class="submit" name="submit" value="Send" />
-			<input type="hidden" name="thread" value="<?=$thread['id'];?>" />
-		</form>
 	</div>
 </div>
 <?php endif; ?>
