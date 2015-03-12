@@ -1,7 +1,8 @@
-<div class="new-article-button">
-	<a href="%appurl%newarticle/<?php echo $category; ?>">Post New Article</a>
-</div>
-<ol class="article-list">
+<h3>Articles</h3>
+
+<a class="button marbot" href="%appurl%newarticle/<?php echo $category; ?>">Post New Article</a>
+	
+<ol class="efvlist">
 	<?php
 		$cat = '';
 		foreach($posts as $post):

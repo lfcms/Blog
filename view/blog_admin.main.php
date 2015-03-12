@@ -2,7 +2,7 @@
 	<form class="instance-title" action="%appurl%addinst/" method="post">
 		<input type="text" name="instance" placeholder="Create a new blog." />
 	</form>
-	<ul class="instance-list">
+	<ul class="efvlist">
 		<?php if($result):
 			foreach($result as $instance): 
 				$instance = $instance['instance']; 
