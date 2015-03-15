@@ -47,7 +47,10 @@ function since($timestamp)
 				$like[] = 't_like'.$thread['id'];
 			}
 		?>
-		<p><?=$thread['content'];?></p>
+		<p><?php			
+			$Parsedown = new Parsedown();
+			echo $Parsedown->text($thread['content']);
+		?></p>
 		<span class="date">
 			Posted by <?php echo $thread['user'] ?> <?=since(strtotime($thread['date']));?>
 		</span>

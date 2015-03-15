@@ -1,15 +1,26 @@
-<form class="blog_edit_article" action="%appurl%edit/<?=$row['id'];?>/" method="post">
-	<div class="save_article">
-		<input type="submit" value="Publish Article" class="save_article" />
-	<?=$msg;?>
+Back to <a href="%appurl%">post list</a>
+
+<h3>Edit Post</h3>
+
+<?=$this->notice();?>
+
+<form class="martop" action="%appurl%edit/<?=$row['id'];?>/" method="post">
+	
+	Title:
+	<input type="text" name="title" value="<?=htmlspecialchars($row['title'], ENT_QUOTES);?>" placeholder="New Title" class="title" />
+
+	
+	Category: <select name="category" id=""><?=$cat_options;?></select> or <input type="text" name="newcat" placeholder="New Category" />
+		
+	<p>Editor supports MarkDown via <a target="_blank" href="http://parsedown.org/demo">Parsedown</a></p>
+	
+	<textarea style="width: 100%; height: 400px; padding: 2px; margin-top: 10px;" id="ckeditor" placeholder="New Content" name="content"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
+	 
+	<input type="hidden" name="access" value="public" />
+	<div class="row">
+		<div class="col-6"><input type="submit" class="green submit" value="Publish Article" /></div>
+		<div class="col-6"><a class="red button" href="%appurl%">Cancel</a></div>
 	</div>
-	<div class="article_title">
-		<input name="title" value="<?=htmlspecialchars($row['title'], ENT_QUOTES);?>" />
-	</div>
-	<div class="category_selection">
-		Category: <select name="category" id=""><?=$cat_options;?></select> or 
-			<input type="text" name="newcat" placeholder="New Category" />
-		<a href="%appurl%">cancel</a>
-	</div>
-	<textarea id="ckeditor" name="content"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
+	
 </form>
+<?php /*readfile(ROOT.'system/lib/editor.js');*/ ?>
