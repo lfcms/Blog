@@ -1,3 +1,4 @@
+<?=$this->notice();?>
 <div class="row">
 	<div class="col-9">
 		<?php

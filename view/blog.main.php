@@ -86,7 +86,10 @@ function since($timestamp)
 							$url_title = preg_replace('/[^a-z0-9]/','-',strtolower($post['title']) );
 						?>
 						<h4><a href="%appurl%cat/<?php echo $post['category'] ?>"><?php echo $post['category'] ?></a> / <a href="%appurl%view/<?php echo $id.'/'.$url_title; ?>"><?php echo $post['title'] ?></a></h4>
-						<p><?=$post['content'];?></p>
+						<p><?php			
+							$Parsedown = new Parsedown();
+							echo $Parsedown->text($post['content']);
+						?></p>
 						<br style="clear:both;" />
 						<span class="date">
 							<a href="%appurl%view/<?php echo $id; ?>/">Permalink</a> | 
