@@ -1,4 +1,4 @@
-<link href="%relbase%lf/apps/blog/css/blog_admin.styles.css" rel="stylesheet">
+<!-- <link href="%relbase%lf/apps/blog/css/blog_admin.styles.css" rel="stylesheet"> -->
 <?php
 
 class blog_admin extends app
@@ -110,13 +110,15 @@ class blog_admin extends app
 	
 	private function rm($vars)
 	{
+		//echo $vars[1];
+		
 		$id = intval($vars[1]);
 		if($id <= 0) return;
-
-		// Remove thread and comments
-		$this->db->query("DELETE FROM blog_threads AND id = ".$id);		
-		if($this->db->affected() == 1)
-			$this->db->query("DELETE FROM blog_messages WHERE parent_id = ".$id);
+		
+		orm::q('blog_messages')->filterByparent_id($id)->delete();
+		orm::q('blog_threads')->filterByid($id)->delete();
+		
+		$this->notice('Post deleted.');
 		
 		redirect302();
 	}

@@ -63,15 +63,7 @@ function since($timestamp)
 		</h2>
 
 		<div id="blog_posts">
-			<?php if($this->request->api('me') != 'anonymous' && false): ?>
-			<form action="%post%" method="post" class="add_thread">
-				<textarea name="input"></textarea>
-				<input type="hidden" name="access" value="public" />
-				<input type="submit" class="submit" value="Create Thread" />
-			</form>
-			<?php endif; if(!count($blog)): ?>
-			<p>No threads to show</p>
-			<?php else: ?>
+			<?php if(isset($blog) && count($blog)): ?>
 			<div id="threads">
 				<?php $like = array(); foreach($blog as $id => $post): /* loop through blog posts */ ?>
 				<div id="thread_<?php echo $id; ?>" class="thread" >
@@ -86,7 +78,10 @@ function since($timestamp)
 							$url_title = preg_replace('/[^a-z0-9]/','-',strtolower($post['title']) );
 						?>
 						<h4><a href="%appurl%cat/<?php echo $post['category'] ?>"><?php echo $post['category'] ?></a> / <a href="%appurl%view/<?php echo $id.'/'.$url_title; ?>"><?php echo $post['title'] ?></a></h4>
-						<p><?=$post['content'];?></p>
+						<p><?php			
+							$Parsedown = new Parsedown();
+							echo $Parsedown->text($post['content']);
+						?></p>
 						<br style="clear:both;" />
 						<span class="date">
 							<a href="%appurl%view/<?php echo $id; ?>/">Permalink</a> | 
@@ -96,6 +91,8 @@ function since($timestamp)
 				</div>
 				<?php endforeach; ?>
 			</div>
+			<?php else: ?>
+			<p>No threads to show</p>
 			<?php endif; ?>
 		</div>
 	</div>
