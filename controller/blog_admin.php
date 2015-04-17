@@ -7,7 +7,7 @@ class blog_admin extends app
 	{
 		$cats = $this->db->fetchall("SELECT DISTINCT category FROM blog_threads ORDER BY category");
 		if(!$cats) 
-			$this->cats[] = 'No categories';
+			$this->cats[] = 'Uncategorized';
 		else
 			foreach($cats as $cat)
 				$this->cats[] = $cat['category'];

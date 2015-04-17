@@ -2,7 +2,7 @@
 
 <a class="button green marbot" href="%appurl%newarticle/<?php echo $category; ?>">Post New Article</a>
 	
-<ol class="efvlist">
+<ol class="efvlist rounded">
 	<?php
 		$cat = '';
 		if($posts)
@@ -15,7 +15,7 @@
 	?>
 	<li>
 		<a href="%appurl%edit/<?=$post['id'];?>/"><?=$post['title'];?></a>
-		<a <?=jsprompt();?>  href="%appurl%rm/<?=$post['id'];?>/" class="delete_item">x</a>
+		<a <?=jsprompt();?>  href="%appurl%rm/<?=$post['id'];?>/" class="x pull-right"><i class="fa fa-trash"></i></a>
 	</li>
 	<?php endforeach; else echo '<li>No Posts</li>'; ?>
 </ol>
