@@ -22,7 +22,7 @@
 	</div>
 	<div class="row">
 		<div class="col-12">
-			<textarea id="ckeditor" placeholder="Write something..." name="content" class="h400"></textarea>
+			<textarea id="ckeditor" placeholder="Write something using Markdown..." name="content" class="h400"></textarea>
 		</div>
 	</div>
 	<input type="hidden" name="access" value="public" />
