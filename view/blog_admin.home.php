@@ -10,7 +10,7 @@
 		<div class="tile rounded">
 			<div class="tile-header light_gray">
 				<form class="category-title" action="%appurl%addcat/" method="post">
-					<h4>Categories</h4>
+					<h4><i class="fa fa-tags"></i> Categories</h4>
 					<input type="text" name="category" placeholder="New category" />
 				</form>
 			</div>
