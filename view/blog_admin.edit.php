@@ -6,7 +6,7 @@
 	
 	<div class="row">
 		<div class="col-12">
-			<input type="text" name="title" value="<?=htmlspecialchars($row['title'], ENT_QUOTES);?>" placeholder="New Title" class="title" />
+			<input type="text" name="title" value="<?=htmlspecialchars($row['title'], ENT_QUOTES);?>" placeholder="Post Title" class="title" />
 		</div>
 	</div>
 	<div class="row">
@@ -22,7 +22,7 @@
 	</div>
 	<div class="row">
 		<div class="col-12">
-			<textarea id="ckeditor" placeholder="New Content" name="content" class="h400"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
+			<textarea id="ckeditor" placeholder="Write something using Markdown..." name="content" class="h400"><?=htmlspecialchars($row['content'], ENT_QUOTES);?></textarea>
 		</div>
 	</div>
 	<input type="hidden" name="access" value="public" />
