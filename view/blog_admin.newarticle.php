@@ -4,15 +4,32 @@ Back to <a href="%appurl%">post list</a>
 
 <?=$this->notice();?>
 
-<form class="martop" action="%appurl%create" method="post">
+<form action="%appurl%create" method="post">
 	
-	Title:
-	<input type="text" name="title" placeholder="New Title" class="title" />
+	<div class="row">
+		<div class="col-12">
+			<input type="text" name="title" placeholder="New Title" class="title" />
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-4">
+			<select name="category" id=""><?=$cat_options;?></select>
+		</div>
+		<div class="col-4">
+			<input type="text" name="newcat" placeholder="New Category" />
+		</div>
+		<div class="col-4">
+			<a target="_blank" class="button" href="http://parsedown.org/demo">Parsedown</a>
+		</div>
+	</div>
+	
+	
 
 	
-	Category: <select name="category" id=""><?=$cat_options;?></select> or <input type="text" name="newcat" placeholder="New Category" />
+	
 		
-	<p>Editor supports MarkDown via <a target="_blank" href="http://parsedown.org/demo">Parsedown</a></p>
+	
 	
 	<textarea style="width: 100%; height: 400px; padding: 2px; margin-top: 10px;" id="ckeditor" placeholder="New Content" name="content"></textarea>
 	 
