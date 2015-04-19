@@ -71,8 +71,7 @@ class blog extends app
 	}
 	
 	public function view($vars)
-	{	
-		
+	{
 		//Thread
 		$thread = $this->db->fetch("
 			SELECT t.id, t.title, t.category, t.owner_id, t.content, t.date, u.display_name as user
