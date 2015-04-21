@@ -1,3 +1,8 @@
+-- In case you are using an old blog table style
+ALTER TABLE io_threads ADD category varchar(128) DEFAULT 'uncategorized';
+ALTER TABLE io_threads ADD instance varchar(128) DEFAULT 'default';
+RENAME TABLE io_threads TO blog_threads, io_messages TO blog_messages;
+
 CREATE TABLE IF NOT EXISTS `blog_threads` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `date` varchar(20) NOT NULL,
@@ -8,10 +13,6 @@ CREATE TABLE IF NOT EXISTS `blog_threads` (
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
--- In case you are using an old blog table style
-ALTER TABLE io_threads ADD category varchar(128) DEFAULT 'uncategorized';
-ALTER TABLE io_threads ADD instance varchar(128) DEFAULT 'default';
 
 CREATE TABLE IF NOT EXISTS `blog_messages` (
   `msg_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,5 +26,3 @@ CREATE TABLE IF NOT EXISTS `blog_messages` (
   `reply` int(11) NOT NULL,
   PRIMARY KEY (`msg_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
-RENAME TABLE io_threads TO blog_threads, io_messages TO blog_messages;
