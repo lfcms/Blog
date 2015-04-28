@@ -13,7 +13,7 @@ class blog extends app
 	//default
 	public function main($vars)
 	{
-			$this->paginate();
+		$this->paginate();
 	}
 	
 	public function cat($args)

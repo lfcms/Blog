@@ -2,7 +2,6 @@
 <div class="row">
 	<div class="col-9">
 		<?php
-			$function = $vars[0];
 			$this->$function($vars);
 		?>
 	</div>
@@ -15,11 +14,16 @@
 				</form>
 			</div>
 			<div class="tile-content">
-				<?php foreach($this->cats as $cat): 
-					if(isset($vars[1]) && $cat == $vars[1]) $selected = 'selected';
-					else $selected = '';
+				<?php foreach($cats as $cat): 
+						if(isset($vars[1]) && $cat == $vars[1]) 
+							$selected = 'selected';
+						else 
+							$selected = '';
 				?>
-					<a class="blue button martop marbot <?=$selected;?>" href="%appurl%cat/<?=urlencode($cat);?>/"><?=$cat;?></a>
+					<a class="blue button martop marbot <?=$selected;?>"
+							href="%appurl%cat/<?=urlencode($cat);?>/">
+						<?=$cat;?>
+					</a>
 				<?php endforeach; ?>
 			</div>
 		</div>

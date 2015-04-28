@@ -25,7 +25,7 @@
 			<textarea id="ckeditor" placeholder="Write something using Markdown..." name="content" class="h400"></textarea>
 		</div>
 	</div>
-	<input type="hidden" name="access" value="public" />
+	<!-- <input type="hidden" name="access" value="public" /> -->
 	<div class="row">
 		<div class="col-6"><button class="green"><i class="fa fa-arrow-circle-up"></i> Publish</button></div>
 		<div class="col-6"><a class="red button" href="%appurl%"><i class="fa fa-ban"></i> Cancel</a></div>
