@@ -36,9 +36,7 @@ class blog_admin extends app
 	 */
 	private function view($vars, $category = '')
 	{
-		$posts = (new Post)
-			->cols('id, title, category')
-			->orderBy('category, title', 'DESC');
+		$posts = (new Post)->articleList();
 		
 		if($category != '') 
 			$posts->byCategory($category);
@@ -75,10 +73,7 @@ class blog_admin extends app
 			
 			unset($_POST['newcat']);
 			
-			$post->qFromResult()
-				->setArray($_POST)
-				->setAsNow('date')
-				->save();
+			$post->saveFromPOST();
 				
 			$this->notice('Page saved.');
 				
@@ -88,12 +83,10 @@ class blog_admin extends app
 		include 'view/blog_admin.edit.php';
 	}
 	
-	
 	private function create($vars)
 	{
 		if( count($_POST) > 0 )
 		{
-			
 			if($_POST['newcat'] != '') 
 				$_POST['category'] = $_POST['newcat'];
 			
@@ -101,10 +94,7 @@ class blog_admin extends app
 			
 			$_POST['owner_id'] = $_SESSION['login']->getId();
 			
-			$id = (new Post)
-				->setAsNow('date')
-				->insertArray($_POST);
-				
+			$id = (new Post)->createFromPOST();
 			$this->notice('Page saved.');
 			
 			redirect302($this->lf->appurl.'edit/'.$id);
@@ -133,8 +123,7 @@ class blog_admin extends app
 		$id = intval($vars[1]);
 		if($id <= 0) return;
 		
-		orm::q('blog_messages')->filterByparent_id($id)->delete();
-		orm::q('blog_threads')->filterByid($id)->delete();
+		(new Post)->deletePost($id);
 		
 		$this->notice('Post deleted.');
 		
