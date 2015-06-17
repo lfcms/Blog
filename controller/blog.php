@@ -13,7 +13,13 @@ class blog extends app
 	//default
 	public function main($vars)
 	{
-		$this->paginate();
+		if(preg_match('/^([0-9]+)\-(.*)/', $vars[0], $match))
+			return $this->view(array('lol',$match[1]));
+		
+		if(preg_match('/^[^0-9].*/', $vars[0], $match))
+			return $this->cat(array('lol', $match[0]));
+		
+		return $this->paginate();
 	}
 	
 	public function cat($args)
@@ -29,14 +35,14 @@ class blog extends app
 	}
 	
 	private function paginate($start = 0, $length = 3, $category = NULL)
-	{	
-		$where = ''; 
-		if(isset($this->ini['cat']))
-		{
+	{
+		if(is_null($category) && isset($this->ini['cat']) )
 			$category = $this->ini['cat'];
-			$where = "WHERE blog_threads.category = '".$this->ini['cat']."'";
-		}
 		
+		$where = ''; 
+		if(!is_null($category))
+			$where = "WHERE t.category = '".$category."'";
+			
 		$start = $start*$length;
 		// print blog articles
 		$sql = "
@@ -48,14 +54,28 @@ class blog extends app
 			LIMIT ".$start.", ".$length."
 		";
 		
-		$this->db->query($sql);
-		while($row = $this->db->fetch())
-			$blog[$row['id']] = $row;
 		
-		$categories = $this->db->fetchall('SELECT DISTINCT category FROM blog_threads '.$where);
+		
+		foreach( (new orm)->fetchall($sql) as $row )
+			$blog[$row['id']] = $row;
+				
+		// not 100% if joins work yet, but ^that would look like this
+		/*(new BlogThreads)
+			->cols('id, title, owner, content, date, category')
+			->joinById( 
+				(new LfUsers)
+					->cols('display_name as user')
+					->withFk('owner_id') 
+			)
+			->orderBy('date')
+			->byCategory('Test')
+			->limit(0, 3);*/		
+		
+		$categories = $this->db->fetchall('SELECT DISTINCT category FROM blog_threads t '.$where);
 		foreach($categories as $cat)
 		{
-			if(!isset($cat_count[$cat['category']])) $cat_count[$cat['category']] = 0;
+			if(!isset($cat_count[$cat['category']]))
+				$cat_count[$cat['category']] = 0;
 			$cat_count[$cat['category']]++;
 		}
 		
@@ -65,9 +85,15 @@ class blog extends app
 		
 		echo preg_replace(
 			'/{(?:youtube|vimeo|embed):([^}]+)}/', 
-			'<iframe src="$1" width="100%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+			'<iframe src="$1" width="70%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
 			ob_get_clean()
 		);
+		
+		/*echo preg_replace(
+			'/{youtube:https?://.*?\.youtu(?:be\..com|\.be)(?:([a-zA-Z0-9]+)|/watch?v=([a-zA-Z0-9]+))}/', 
+			'<iframe src="https://www.youtube.com/embed/$1" width="70%" height="400px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+			ob_get_clean()
+		);*/ // this might work, havent tried it yet
 	}
 	
 	public function view($vars)
