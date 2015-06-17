@@ -59,7 +59,7 @@ function since($timestamp)
 	<div class="col-9">
 		<h2>
 			<a href="%appurl%"><?php echo isset($this->ini['inst']) ? $this->ini['inst'] : 'Blog'; ?></a>
-		<?php echo isset($category) ? ' / <a href="%appurl%cat/'.$category.'/">'.$category.'</a>' : ''; ?>
+		<?php echo isset($category) ? ' > <a href="%appurl%'.$category.'/">'.$category.'</a>' : ''; ?>
 		</h2>
 
 		<div id="blog_posts">
@@ -77,14 +77,21 @@ function since($timestamp)
 							}
 							$url_title = preg_replace('/[^a-z0-9]/','-',strtolower($post['title']) );
 						?>
-						<h4><a href="%appurl%cat/<?php echo $post['category'] ?>"><?php echo $post['category'] ?></a> / <a href="%appurl%view/<?php echo $id.'/'.$url_title; ?>"><?php echo $post['title'] ?></a></h4>
+						<h4>
+							<a href="%appurl%<?php echo $post['category'] ?>">
+								<?php echo $post['category'] ?>
+							</a> / 
+							<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">
+								<?php echo $post['title'] ?>
+							</a>
+						</h4>
 						<p><?php			
 							$Parsedown = new Parsedown();
 							echo $Parsedown->text($post['content']);
 						?></p>
 						<br style="clear:both;" />
 						<span class="date">
-							<a href="%appurl%view/<?php echo $id; ?>/">Permalink</a> | 
+							<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">Permalink</a> | 
 							Posted by <?php echo $post['user'] ?> <?=since(strtotime($post['date']));?>
 						</span>			
 					</div>

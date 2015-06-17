@@ -21,11 +21,13 @@ function since($timestamp)
 }
 ?>
 
-<h2>
-	<a href="%appurl%">Blog</a> 
-	/ <a href="%appurl%cat/<?=$thread['category'];?>"><?php echo $thread['category']; ?></a>
-</h2>
-<h3><?php echo $thread['title'] ?></h3>
+<p>
+	<a href="%appurl%">Blog</a> >
+	<a href="%appurl%<?=$thread['category'];?>">
+		<?php echo $thread['category']; ?>
+	</a>
+</p>
+<h2><a href=""><?php echo $thread['title'] ?></a></h2>
 
 <?php if($this->request->api('me') != 'anonymous' && false): ?>
 <form action="%appurl%mkthread/" method="post" class="add_thread">
