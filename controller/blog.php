@@ -22,6 +22,22 @@ class blog extends app
 		return $this->paginate();
 	}
 	
+	public function latest($vars)
+	{
+		$thread = (new BlogThreads)->first();
+		//pre($thread);
+		
+		echo '<h3>Latest Blog Post</h3>';
+		echo '<h4><a href="%baseurl%blog/'.$thread['id'].'-'
+				.str_replace(' ', '-', $thread['title']).'">
+					'.$thread['category'].' / '.$thread['title'].'</a></h4>';
+		
+		$Parsedown = new Parsedown();
+		echo $Parsedown->text($thread['content']);
+		
+		echo '<p><a href="%baseurl%blog">more from our blog...</a></p>';
+	}
+	
 	public function cat($args)
 	{
 		$args[1] = urldecode($args[1]);
@@ -172,7 +188,12 @@ class blog extends app
 		<?php
 	}
 	
-	public function latest($vars)
+	/*public function latest($vars)
+	{
+		return $this->paginate(0,1);
+	}*/
+	
+	public function gridlist($vars)
 	{
 		/*$sql = "SELECT * FROM blog_threads";
 		$this->db->query($sql);
@@ -195,12 +216,16 @@ class blog extends app
 			$bg = $match[1];
 		
 		?>
-		<article>
-			<header><?php echo $this->ini['cat']; ?></header>
-			<img width="200px" height="200px" src="<?php echo $bg; ?>" alt="#" title="#" />
-			<!-- <script type="text/javascript" src="http://www.freshcontent.net/music_news_feed.php"></script> -->
-			<a href="%baseurl%latest/view/<?php echo $latest['id']; ?>/"><?php echo $latest['title']; ?></a>
-		</article>
+		
+
+		
+<article>
+	<header><?php echo $this->ini['cat']; ?></header>
+	<img width="200px" height="200px" src="<?php echo $bg; ?>" alt="#" title="#" />
+	<!-- <script type="text/javascript" src="http://www.freshcontent.net/music_news_feed.php"></script> -->
+	<a href="%baseurl%latest/view/<?php echo $latest['id']; ?>/"><?php echo $latest['title']; ?></a>
+</article>
+
 		<?php
 	}
 }
