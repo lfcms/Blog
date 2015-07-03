@@ -27,7 +27,6 @@ class blog extends app
 		$thread = (new BlogThreads)->first();
 		//pre($thread);
 		
-		echo '<h3>Latest Blog Post</h3>';
 		echo '<h4><a href="%baseurl%blog/'.$thread['id'].'-'
 				.str_replace(' ', '-', $thread['title']).'">
 					'.$thread['category'].' / '.$thread['title'].'</a></h4>';
