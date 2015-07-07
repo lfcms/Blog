@@ -24,7 +24,7 @@ class blog extends app
 	
 	public function latest($vars)
 	{
-		$thread = (new BlogThreads)->first();
+		$thread = (new BlogThreads)->order('id','DESC')->first();
 		//pre($thread);
 		
 		echo '<h4><a href="%baseurl%blog/'.$thread['id'].'-'
