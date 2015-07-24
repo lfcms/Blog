@@ -1,7 +1,7 @@
 <?php
 
-$prev = 'Newer';
-		$next = 'Older';
+$prev = '<i class="fa fa-caret-left"></i> Newer';
+		$next = 'Older <i class="fa fa-caret-right"></i>';
 		
 		if($start > 0)
 			$prev = '<a href="%appurl%p/'.(($start/$length) - 1).'">'.$prev.'</a>';
@@ -57,11 +57,7 @@ function since($timestamp)
 
 <div class="row">
 	<div class="col-9">
-		<h2>
-			<a href="%appurl%"><?php echo isset($this->ini['inst']) ? $this->ini['inst'] : 'Blog'; ?></a>
-		<?php echo isset($category) ? ' > <a href="%appurl%'.$category.'/">'.$category.'</a>' : ''; ?>
-		</h2>
-
+		
 		<div id="blog_posts">
 			<?php if(isset($blog) && count($blog)): ?>
 			<div id="threads">
@@ -77,36 +73,54 @@ function since($timestamp)
 							}
 							$url_title = preg_replace('/[^a-z0-9]/','-',strtolower($post['title']) );
 						?>
-						<h4>
-							<a href="%appurl%<?php echo $post['category'] ?>">
-								<?php echo $post['category'] ?>
-							</a> / 
+						<h2>
 							<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">
 								<?php echo $post['title'] ?>
 							</a>
-						</h4>
+						</h2>
+						<span>Posted by <?php echo $post['user'] ?> <?=since(strtotime($post['date']));?></span>
 						<p><?php			
 							$Parsedown = new Parsedown();
 							echo $Parsedown->text($post['content']);
 						?></p>
 						<br style="clear:both;" />
-						<span class="date">
-							<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">Permalink</a> | 
-							Posted by <?php echo $post['user'] ?> <?=since(strtotime($post['date']));?>
-						</span>			
+						<ul class="hlist hspaced"> 
+							<li>
+								<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">
+									<i class="fa fa-link"></i> Permalink
+								</a>
+							</li>
+							<li>
+								<a href="%appurl%<?php echo $post['category'] ?>">
+									<i class="fa fa-tag"></i> <?php echo $post['category'] ?>
+								</a>
+							</li>
+						</ul>			
 					</div>
 				</div>
+				<hr />
 				<?php endforeach; ?>
 			</div>
 			<?php else: ?>
 			<p>No threads to show</p>
 			<?php endif; ?>
 		</div>
+		<div class="row">
+			<div class="col-6">
+				<?php echo $prev; ?>
+			</div>
+			<div class="col-6">
+				<span class="pull-right">
+					<?php echo $next; ?>
+				</span>
+			</div>
+		</div>
 	</div>
 	<div class="col-3">
 		<div id="blog_categories" class="sidebar">
 			<h3>Categories</h3>
-			<ul>
+			<ul class="efvlist rounded">
+				<li><a href="%appurl%">All Categories</a>
 				<?php if(isset($cat_count)) 
 				{
 					ob_start();
@@ -122,14 +136,9 @@ function since($timestamp)
 					}			
 					else echo ob_get_clean();
 				} else { ?>
-				<li>No categories</li>
+				<li>No Categories</li>
 				<?php } ?>
 			</ul>
 		</div>
 	</div>
 </div>
-
-<?php
-
-echo '<div style="clear:both;"></div>';
-echo $prev.' | '.$next;

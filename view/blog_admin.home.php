@@ -10,7 +10,7 @@
 			<div class="tile-header light_gray">
 				<form class="category-title" action="%appurl%addcat/" method="post">
 					<h4><i class="fa fa-tags"></i> Categories</h4>
-					<input type="text" name="category" placeholder="New category" />
+					<input class="marbot" type="text" name="category" placeholder="New category" />
 				</form>
 			</div>
 			<div class="tile-content">

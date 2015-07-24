@@ -18,14 +18,14 @@ Last Edited: <?=$post->date;?>
 			<input type="text" name="newcat" placeholder="New Category" />
 		</div>
 		<div class="col-2">
-			<a target="_blank" class="button" href="http://parsedown.org/demo">
-				M <i class="fa fa-long-arrow-down"></i>
+			<a class="button white gray_fg" target="_blank" title="Markdown is built in. Give it a try!" href="http://parsedown.org/demo">
+				Markdown
 			</a>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-12">
-			<textarea id="ckeditor" placeholder="Write something using Markdown..." name="content" class="h400"><?=htmlspecialchars($post->content, ENT_QUOTES);?></textarea>
+			<textarea id="ckeditor" placeholder="Write something..." name="content" class="h400"><?=htmlspecialchars($post->content, ENT_QUOTES);?></textarea>
 		</div>
 	</div>
 	<!-- <input type="hidden" name="access" value="public" /> -->
