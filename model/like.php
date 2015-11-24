@@ -1,5 +1,6 @@
 <?php
 
+// this needs to be a plugin...
 if(count($like) > 0 && $this->request->api('me') != 'anonymous')
 {
 	// Get list of likes
