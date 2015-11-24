@@ -1,5 +1,8 @@
 <?php
 
+if(!class_exists('blog'))                                         
+    include 'model/blog.php';
+
 class blog_index extends app
 {
 	public $theme = 'lf';
