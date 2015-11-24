@@ -18,11 +18,14 @@ class blog_index extends app
 	
 	private function viewPost($id)
 	{
+		
 		$partial = 'blog.post';
 		if(isset($_GET['api'])) //ezpz
 			$partial = 'blog.json';
 		
 		$thread = (new BlogThreads)->getById($id);
+		
+		$this->lf->select['title'] = $thread['title']; // SEO!
 		
 		$post = $this->partial(
 			$partial, 

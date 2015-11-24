@@ -75,7 +75,7 @@ class blog_admin extends app
 			
 			$post->saveFromPOST();
 				
-			$this->notice('Page saved.');
+			$this->notice('<div class="notice">Page saved.</div>');
 				
 			redirect302();
 		}
@@ -95,7 +95,7 @@ class blog_admin extends app
 			$_POST['owner_id'] = $_SESSION['login']->getId();
 			
 			$id = (new Post)->createFromPOST();
-			$this->notice('Page saved.');
+			$this->notice('<div class="notice">Page saved.</div>');
 			
 			redirect302($this->lf->appurl.'edit/'.$id);
 		}
