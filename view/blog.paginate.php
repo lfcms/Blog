@@ -33,7 +33,7 @@
 	</div>
 	<div class="col-3">
 		<div id="blog_categories" class="sidebar">
-			<?php $this->printCategoryCount(); ?>
+			<?php $this->printCategoryCount($this->chosenCategory); ?>
 		</div>
 	</div>
 </div>

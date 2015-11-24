@@ -1,6 +1,6 @@
 <h3>Categories</h3>
 <ul class="efvlist rounded">
-	<li><a href="%appurl%">All Categories</a>
+	<li<?=is_null($category)?' class="active"':'';?><a href="%appurl%">All Categories</a>
 	<?php if(isset($catmap)) 
 	{
 		ob_start();

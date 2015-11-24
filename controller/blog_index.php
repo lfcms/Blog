@@ -6,6 +6,7 @@ if(!class_exists('blog'))
 class blog_index extends app
 {
 	public $theme = 'lf';
+	public $chosenCategory = null;
 	
 	public function init($args)
 	{
@@ -45,7 +46,7 @@ class blog_index extends app
 				);?>
 			</div>
 			<div class="col-3">
-				<?php $this->printCategoryCount(); ?>
+				<?php $this->printCategoryCount($this->chosenCategory); ?>
 			</div>
 		</div>
 		<?php
@@ -86,7 +87,7 @@ class blog_index extends app
 		include 'view/blog.paginate.php';
 	}
 	
-	public function printCategoryCount()
+	public function printCategoryCount($chosenCategory = null)
 	{
 		// this should be its own table. counting all rows is slow.
 		foreach( (new BlogThreads)->cols('category')->getAll() as $value )
@@ -97,11 +98,11 @@ class blog_index extends app
 				$catmap[$category] = 0;
 			$catmap[$category]++;
 		}
-		
+
 		echo $this->partial('blog.categories', 
 			array(
 				'catmap' => $catmap, 
-				'category' => null
+				'category' => $chosenCategory
 			) 
 		);
 	}
@@ -120,6 +121,7 @@ class blog_index extends app
 	{
 		$args[1] = urldecode($args[1]);
 		$_GET['category'] = $args[1];
+		$this->chosenCategory = $args[1];
 		$this->main($args);
 	}
 	
