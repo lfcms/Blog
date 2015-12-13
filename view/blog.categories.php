@@ -8,7 +8,7 @@
 			$urlcat = urlencode($cat);
 		?>
 			<li><a href="%appurl%cat/<?=$urlcat;?>"><?=$cat;?></a> (<?=$count;?>)</li>
-<?php 		endforeach;
+<?php 	endforeach;
 	
 		if($category != NULL)
 		{
