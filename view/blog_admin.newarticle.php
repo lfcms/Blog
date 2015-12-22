@@ -1,4 +1,4 @@
-<h3><i class="fa fa-plus"></i> New Post</h3>
+<h3 class="no_martop"><i class="fa fa-plus"></i> New Post</h3>
 
 <?=$this->notice();?>
 
@@ -17,7 +17,7 @@
 			<input type="text" name="newcat" placeholder="New Category" />
 		</div>
 		<div class="col-2">
-			<a  class="button white gray_fg" target="_blank" title="Markdown is built in. Give it a try!" href="http://parsedown.org/demo">Markdown</a>
+			<a  class="button light_gray gray_fg" target="_blank" title="Markdown is built in. Give it a try!" href="http://parsedown.org/demo">Markdown</a>
 		</div>
 	</div>
 	<div class="row">
