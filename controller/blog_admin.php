@@ -1,62 +1,61 @@
 <?php
 
-class blog_admin extends app
+class blog_admin
 {
-	/**
-	 * Route all functions through main() which loads a from at home.php
-	 * based on $vars
-	 */
-	public function main($vars)
+	public function main()
 	{
-		$this->categories = (new Post)->listCategories();
-		$cats = $this->categories;
+		if( \lf\www('Param') == array() )
+			$function = 'view';
+		else
+			$function = \lf\www('Param')[0];
 		
-		if($vars[0] == '') 
-			$vars[0] = 'view';
+		notice();
 		
-		$function = $vars[0];
+		echo \lf\row('no_martop',
+			\lf\col(9,
+				(new blog)->printThreads()
+			).
+			\lf\col(3,
+				(new blog)->printCategories()
+			)
+		);
+	}
+	
+	public function newArticle()
+	{
+		if( \lf\www('Param') == array() )
+			$function = 'view';
+		else
+			$function = \lf\www('Param')[0];
 		
+		notice();
 		
-		include 'view/blog_admin.home.php';
+		echo (new blog)->newArticleForm();
 	}
 	
 	/**
 	 * Limit view() to certain category
 	 * 
 	 */
-	private function cat($vars)
+	private function cat()
 	{
+		$vars = \lf\www('Param'); //backward compat
 		$vars[1] = urldecode($vars[1]);
 		$this->view($vars, $vars[1]);
-	}
-	
-	/**
-	 * Default list of Articles
-	 * 
-	 */
-	private function view($vars, $category = '')
-	{
-		$posts = (new Post)->articleList();
-		
-		if($category != '') 
-			$posts->byCategory($category);
-			
-		$posts->find();
-		
-		include 'view/blog_admin.view.php';
 	}
 	
 	/**
 	 * Edit form for given article
 	 * 
 	 */
-	private function edit($vars)
+	public function edit()
 	{
-		$cats = $this->categories;
-		$post = (new Post)->findById($this->lf->vars[1]);
+		$vars = \lf\www('Param'); //backward compat
+		
+		$post = (new BlogThreads)->findById($vars[1]);
 		
 		$cat_options = '';
-		foreach($cats as $cat)
+		foreach( (new blog)->listCategories() as $cat )
 		{
 			$selected = ( $cat == $post->category )
 				? ' selected="selected"' 
@@ -65,7 +64,7 @@ class blog_admin extends app
 		}
 	
 		if(is_null($post->result))
-			redirect302($this->lf->appurl);
+			redirect302();
 		
 		if(count($_POST) > 0)
 		{
@@ -73,9 +72,9 @@ class blog_admin extends app
 			
 			unset($_POST['newcat']);
 			
-			$post->saveFromPOST();
+			(new blog)->updatePost();
 				
-			$this->notice('<div class="notice">Page saved.</div>');
+			notice('<div class="notice">Page saved.</div>');
 				
 			redirect302();
 		}
@@ -83,8 +82,9 @@ class blog_admin extends app
 		include 'view/blog_admin.edit.php';
 	}
 	
-	private function create($vars)
+	private function create()
 	{
+		$vars = \lf\www('Param'); //backward compat
 		if( count($_POST) > 0 )
 		{
 			if($_POST['newcat'] != '') 
@@ -95,14 +95,15 @@ class blog_admin extends app
 			$_POST['owner_id'] = $_SESSION['login']->getId();
 			
 			$id = (new Post)->createFromPOST();
-			$this->notice('<div class="notice">Page saved.</div>');
+			notice('<div class="notice">Page saved.</div>');
 			
-			redirect302($this->lf->appurl.'edit/'.$id);
+			redirect302($this->appurl.'edit/'.$id);
 		}
 	}
 	
-	private function newarticle($vars)
+	/*public function newarticle()
 	{
+		$vars = \lf\www('Param'); //backward compat
 		$cat_options = '';
 		foreach($this->categories as $cat)
 		{
@@ -114,10 +115,11 @@ class blog_admin extends app
 		}
 		
 		include 'view/blog_admin.newarticle.php';
-	}
+	}*/
 	
-	private function rm($vars)
+	private function rm()
 	{
+		$vars = \lf\www('Param'); //backward compat
 		//echo $vars[1];
 		
 		$id = intval($vars[1]);
@@ -125,7 +127,7 @@ class blog_admin extends app
 		
 		(new Post)->deletePost($id);
 		
-		$this->notice('Post deleted.');
+		notice('Post deleted.');
 		
 		redirect302();
 	}

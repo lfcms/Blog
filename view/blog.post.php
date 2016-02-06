@@ -8,7 +8,7 @@
 		</h2>
 		
 		<span>Posted by {user:<?php echo $post['owner_id'] ?>} <?=since(strtotime($post['date']));?></span>
-		<p><?php			
+		<p><?php
 			$Parsedown = new Parsedown();
 			echo $Parsedown->text($post['content']);
 		?></p>

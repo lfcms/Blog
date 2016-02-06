@@ -1,6 +1,6 @@
 <?php
 
-$blogs = $this->db->fetchall('SELECT DISTINCT category FROM blog_threads');
+$blogs = (new \lf\orm)->fetchall('SELECT DISTINCT category FROM blog_threads');
 
 $args = '';
 if(count($blogs))

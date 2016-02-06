@@ -1,6 +1,6 @@
 <h3><i class="fa fa-plus"></i> New Post</h3>
 
-<?=$this->notice();?>
+<?=notice();?>
 
 <form action="%appurl%create" method="post">
 	

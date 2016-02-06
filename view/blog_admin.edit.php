@@ -1,6 +1,6 @@
 <h3><i class="fa fa-pencil-square-o"></i> Edit Post</h3>
 
-<?=$this->notice();?>
+<?=notice();?>
 
 Last Edited: <?=$post->date;?>
 

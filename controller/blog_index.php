@@ -1,14 +1,14 @@
 <?php
 
-if(!class_exists('blog'))                                         
+if(!class_exists('\blog'))                                         
     include 'model/blog.php';
 
-class blog_index extends app
+class blog_index
 {
 	public $theme = 'lf';
 	public $chosenCategory = null;
 	
-	public function init($args)
+	public function init()
 	{
 		$ini = $this->ini;
 		
@@ -28,7 +28,7 @@ class blog_index extends app
 		
 		$this->lf->select['title'] = $thread['title']; // SEO!
 		
-		$post = $this->partial(
+		$post = (new \lf\cms)->partial(
 			$partial, 
 			array(
 				'post' => $thread
@@ -38,7 +38,7 @@ class blog_index extends app
 		?>
 		<div class="row">
 			<div class="col-9">
-				<?=$this->partial(
+				<?=(new \lf\cms)->partial(
 					$partial, 
 					array(
 						'post' => $thread
@@ -53,8 +53,10 @@ class blog_index extends app
 	}
 	
 	//default
-	public function main($vars)
+	public function main()
 	{
+		$vars = \lf\www('Param');
+		
 		if(preg_match('/^([0-9]+)\-(.*)/', $vars[0], $match))
 			return $this->viewPost($match[1]);
 		
@@ -99,7 +101,7 @@ class blog_index extends app
 			$catmap[$category]++;
 		}
 
-		echo $this->partial('blog.categories', 
+		echo (new \lf\cms)->partial('blog.categories', 
 			array(
 				'catmap' => $catmap, 
 				'category' => $chosenCategory
@@ -107,7 +109,7 @@ class blog_index extends app
 		);
 	}
 	
-	public function latest($vars)
+	public function latest()
 	{
 		return $this->partial(
 			'blog.post', 
@@ -117,8 +119,10 @@ class blog_index extends app
 		);
 	}
 	
-	public function cat($args)
+	public function cat()
 	{
+		$args = \lf\www('Param');
+		
 		$args[1] = urldecode($args[1]);
 		$_GET['category'] = $args[1];
 		$this->chosenCategory = $args[1];
@@ -126,7 +130,7 @@ class blog_index extends app
 	}
 	
 	// this could be cool if we fixed it up a little. maybe move to blog model
-	public function gridlist($vars)
+	public function gridlist()
 	{
 		/*$sql = "SELECT * FROM blog_threads";
 		$this->db->query($sql);

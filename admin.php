@@ -1,9 +1,6 @@
-<?php 
+<?php
 
+include 'model/blog.php';
 include 'model/post.php';
-
-echo $this->lf->mvc('blog_admin');
-
-// echo $this->request->apploader('blog_admin');
-
-/*readfile(ROOT.'system/lib/editor.js');*/
+include 'controller/blog_admin.php';
+echo (new \lf\cms)->mvc( (new blog_admin) );

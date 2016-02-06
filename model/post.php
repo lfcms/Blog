@@ -2,20 +2,7 @@
 
 class Post extends BlogThreads
 {
-	public function listCategories()
-	{
-		$this->distinct('category')
-			->orderBy('category')
-			->find();
-		
-		if(is_null($this->result))
-			return array('Uncategorized');
-		else
-			while($cat = $this->get())
-				$ret[] = $cat['category'];
-		
-		return $ret;
-	}
+	
 	
 	public function articleList()
 	{

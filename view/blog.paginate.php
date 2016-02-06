@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-9">
 		<?php if( (new User)->fromSession()->hasAccess('admin') ): ?>
-		<a class="transparent button dark" href="%baseurl%admin/apps/blog/newarticle/">Publish new Post (logged in as <?=(new User)->fromSession()->getDisplay_name();?>)</a>
+		<a class="transparent button dark" href="<?=\lf\www('Admin');?>apps/blog/newarticle/">Publish new Post (logged in as <?=(new User)->fromSession()->getDisplay_name();?>)</a>
 		<?php endif; ?>
 		
 		<div id="blog_posts">
@@ -11,7 +11,7 @@
 			<?php //loop through blog posts
 			foreach($blog->getThreads() as $index => $post): ?>
 				
-				<?=$this->partial('blog.post', array('post' => $post) );?>
+				<?=(new \lf\cms)->partial('blog.post', array('post' => $post) );?>
 			
 				<hr />
 			<?php endforeach; ?>
