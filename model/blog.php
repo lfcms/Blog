@@ -75,11 +75,12 @@ class blog
 		return $ret;
 	}
 	
-	public function updatePost()
+	public function updatePost($id)
 	{
 		return (new BlogThreads)
 			->setArray($_POST)
 			->setAsNow('date')
+			->byId($id)
 			->save();
 	}
 	

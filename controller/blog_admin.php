@@ -72,7 +72,7 @@ class blog_admin
 			
 			unset($_POST['newcat']);
 			
-			(new blog)->updatePost();
+			(new blog)->updatePost($vars[1]);
 				
 			notice('<div class="notice">Page saved.</div>');
 				
@@ -82,7 +82,7 @@ class blog_admin
 		include 'view/blog_admin.edit.php';
 	}
 	
-	private function create()
+	public function create()
 	{
 		$vars = \lf\www('Param'); //backward compat
 		if( count($_POST) > 0 )
@@ -97,7 +97,7 @@ class blog_admin
 			$id = (new Post)->createFromPOST();
 			notice('<div class="notice">Page saved.</div>');
 			
-			redirect302($this->appurl.'edit/'.$id);
+			redirect302(\lf\wwwAppUrl().'edit/'.$id);
 		}
 	}
 	
@@ -117,31 +117,29 @@ class blog_admin
 		include 'view/blog_admin.newarticle.php';
 	}*/
 	
-	private function rm()
+	public function rm()
 	{
 		$vars = \lf\www('Param'); //backward compat
-		//echo $vars[1];
 		
 		$id = intval($vars[1]);
 		if($id <= 0) return;
 		
-		(new Post)->deletePost($id);
+		(new BlogThreads)->debug()->deleteById($id);
 		
 		notice('Post deleted.');
-		
-		redirect302();
+		redirect302( \lf\wwwAppUrl() );
 	}
 	
 	public function addcat()
 	{
 		if(count($_POST) > 0)
-			$result = $this->db->query("
+			$result = (new \lf\orm)->query("
 				INSERT INTO blog_threads (`id`, `category`, `title`, `content`, `owner_id`, `date`)
 				VALUES (
-					NULL, '".$this->db->escape($_POST['category'])."',
-					'New ".$this->db->escape($_POST['category'])." article', 
+					NULL, '".(new \lf\orm)->escape($_POST['category'])."',
+					'New ".(new \lf\orm)->escape($_POST['category'])." article', 
 					'New Content',
-					".$this->request->api('getuid').",
+					".(new \lf\user)->fromSession()->getId().",
 					NOW() 
 				)
 			");
