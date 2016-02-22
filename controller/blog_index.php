@@ -39,11 +39,10 @@ class blog_index
 		<div class="row">
 			<div class="col-9">
 				<?=(new \lf\cms)->partial(
-					$partial, 
-					array(
-						'post' => $thread
-					) 
-				);?>
+						$partial, 
+						array(
+							'post' => $thread
+						));?>
 			</div>
 			<div class="col-3">
 				<?php $this->printCategoryCount($this->chosenCategory); ?>
