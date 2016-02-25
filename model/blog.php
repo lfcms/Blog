@@ -13,7 +13,7 @@ class blog
 	 */
 	public function printThreads($category = '')
 	{
-		$vars = \lf\www('Param'); //backward compat
+		$vars =  \lf\requestGet('Param'); //backward compat
 		//$posts = (new Post)->articleList();
 		
 		$posts = (new BlogThreads);
@@ -30,7 +30,7 @@ class blog
 	
 	public function newArticleForm()
 	{
-		$vars = \lf\www('Param'); //backward compat
+		$vars =  \lf\requestGet('Param'); //backward compat
 		$cat_options = '';
 		foreach($this->listCategories() as $cat)
 		{
@@ -48,7 +48,7 @@ class blog
 	
 	public function printCategories()
 	{
-		$vars = \lf\www('Param'); //backward compat
+		$vars =  \lf\requestGet('Param'); //backward compat
 		$this->categories = $this->listCategories();
 		$cats = $this->categories;
 		

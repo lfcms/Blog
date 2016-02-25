@@ -4,7 +4,7 @@
 
 Last Edited: <?=$post->date;?>
 
-<form class="martop" action="<?=\lf\wwwAppUrl();?>edit/<?=$post->id;?>/" method="post">
+<form class="martop" action="<?=\lf\requestGet('ActionUrl');?>edit/<?=$post->id;?>/" method="post">
 	<div class="row">
 		<div class="col-12">
 			<input type="text" name="title" value="<?=htmlspecialchars($post->title, ENT_QUOTES);?>" placeholder="Post Title" class="title" />

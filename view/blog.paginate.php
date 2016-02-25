@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-9">
 		<?php if( (new User)->fromSession()->hasAccess('admin') ): ?>
-		<a class="transparent button dark" href="<?=\lf\www('Admin');?>apps/blog/newarticle/">Publish new Post (logged in as <?=(new User)->fromSession()->getDisplay_name();?>)</a>
+		<a class="transparent button dark" href="<?=\lf\requestGet('AdminUrl');?>apps/blog/newarticle/">Publish new Post (logged in as <?=(new User)->fromSession()->getDisplay_name();?>)</a>
 		<?php endif; ?>
 		
 		<div id="blog_posts">

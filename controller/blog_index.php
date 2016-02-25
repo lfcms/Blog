@@ -17,6 +17,44 @@ class blog_index
 			$this->ini = array_combine($match[1], $match[2]);
 	}
 	
+	//default
+	public function main()
+	{
+		$vars = \lf\requestGet('Param');
+		
+		if(preg_match('/^([0-9]+)\-(.*)/', $vars[0], $match))
+			return $this->viewPost($match[1]);
+		
+		$p = 1;
+		if(isset($_GET['p']))
+			$p = $_GET['p'];
+		
+		$blog = (new blog)->loadThreads($_GET);
+		
+		
+		/* NEXT && PREV */
+		$prev = '<i class="fa fa-caret-left"></i> Newer';
+		$next = 'Older <i class="fa fa-caret-right"></i>';
+
+		if($p > 1)
+			$prev = '<a href="?p='.($p - 1).'">'.$prev.'</a>';
+
+		$threads = (new BlogThreads);
+		if(isset($this->ini['cat']))
+			$threads->byCategory($this->ini['cat']);
+
+		$limit = $threads->rowCount();
+
+		if($p * $blog->ppp() < $limit)
+			$next = '<a href="?p='.($p + 1).'">'.$next.'</a>';
+			
+		$page =  '/ Page '.$p;
+		/* END - NEXT && PREV */
+		
+		include 'view/blog.paginate.php';
+	}
+	
+	
 	private function viewPost($id)
 	{
 		
@@ -51,43 +89,6 @@ class blog_index
 		<?php
 	}
 	
-	//default
-	public function main()
-	{
-		$vars = \lf\www('Param');
-		
-		if(preg_match('/^([0-9]+)\-(.*)/', $vars[0], $match))
-			return $this->viewPost($match[1]);
-		
-		$p = 1;
-		if(isset($_GET['p']))
-			$p = $_GET['p'];
-		
-		$blog = (new blog)->loadThreads($_GET);
-		
-		
-		/* NEXT && PREV */
-		$prev = '<i class="fa fa-caret-left"></i> Newer';
-		$next = 'Older <i class="fa fa-caret-right"></i>';
-
-		if($p > 1)
-			$prev = '<a href="?p='.($p - 1).'">'.$prev.'</a>';
-
-		$threads = (new BlogThreads);
-		if(isset($this->ini['cat']))
-			$threads->byCategory($this->ini['cat']);
-
-		$limit = $threads->rowCount();
-
-		if($p * $blog->ppp() < $limit)
-			$next = '<a href="?p='.($p + 1).'">'.$next.'</a>';
-			
-		$page =  '/ Page '.$p;
-		/* END - NEXT && PREV */
-		
-		include 'view/blog.paginate.php';
-	}
-	
 	public function printCategoryCount($chosenCategory = null)
 	{
 		// this should be its own table. counting all rows is slow.
@@ -120,7 +121,7 @@ class blog_index
 	
 	public function cat()
 	{
-		$args = \lf\www('Param');
+		$args = \lf\requestGet('Param');
 		
 		$args[1] = urldecode($args[1]);
 		$_GET['category'] = $args[1];
