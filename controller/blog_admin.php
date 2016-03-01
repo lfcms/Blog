@@ -97,7 +97,7 @@ class blog_admin
 			$id = (new Post)->createFromPOST();
 			notice('<div class="notice">Page saved.</div>');
 			
-			redirect302(\lf\wwwAppUrl().'edit/'.$id);
+			redirect302(\lf\requestGet('ActionUrl').'edit/'.$id);
 		}
 	}
 	
@@ -124,10 +124,10 @@ class blog_admin
 		$id = intval($vars[1]);
 		if($id <= 0) return;
 		
-		(new BlogThreads)->debug()->deleteById($id);
+		(new BlogThreads)->deleteById($id);
 		
 		notice('Post deleted.');
-		redirect302( \lf\wwwAppUrl() );
+		redirect302( \lf\requestGet('ActionUrl') );
 	}
 	
 	public function addcat()
