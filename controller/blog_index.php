@@ -10,6 +10,8 @@ class blog_index
 	
 	public function init()
 	{
+		(new \lf\template)->setTitle('Blog') ;
+		
 		$ini = $this->ini;
 		
 		// I was experimenting with stuff like grid=true&
@@ -31,7 +33,6 @@ class blog_index
 		
 		$blog = (new blog)->loadThreads($_GET);
 		
-		
 		/* NEXT && PREV */
 		$prev = '<i class="fa fa-caret-left"></i> Newer';
 		$next = 'Older <i class="fa fa-caret-right"></i>';
@@ -51,6 +52,7 @@ class blog_index
 		$page =  '/ Page '.$p;
 		/* END - NEXT && PREV */
 		
+		(new \lf\template)->appendTitle('Home');
 		include 'view/blog.paginate.php';
 	}
 	
@@ -64,14 +66,14 @@ class blog_index
 		
 		$thread = (new BlogThreads)->getById($id);
 		
-		$this->lf->select['title'] = $thread['title']; // SEO!
-		
 		$post = (new \lf\cms)->partial(
 			$partial, 
 			array(
 				'post' => $thread
 			) 
 		);
+		
+		(new \lf\template)->appendTitle($thread['title']); // SEO!
 		
 		?>
 		<div class="row">
