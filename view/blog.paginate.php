@@ -11,7 +11,10 @@
 			<?php //loop through blog posts
 			foreach($blog->getThreads() as $index => $post): ?>
 				
-				<?=(new \lf\cms)->partial('blog.post', array('post' => $post) );?>
+				<?=(new \lf\cms)->partial('blog.post', [
+											'post' => $post, 
+											'exclude' => ['content'] 
+											] );?>
 			
 				<hr />
 			<?php endforeach; ?>

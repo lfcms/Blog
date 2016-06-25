@@ -136,12 +136,12 @@ class blog
 		return $this;
 	}
 	
-	public function getThreads()
+	public function getThreads($filter = array())
 	{
 		// see if its cached
 		if( is_null( $this->threads ) )
 			// load it if it is not
-			$this->loadThreads();
+			$this->loadThreads($filter = array());
 		
 		// print the loaded result
 		return $this->threads->getAll();

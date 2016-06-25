@@ -9,6 +9,9 @@ class blog_index
 	{
 		(new \lf\template)->setTitle('Blog') ;
 		
+		if( !isset( $this->ini ) )
+			$this->ini = '';
+		
 		$ini = $this->ini;
 		
 		// I was experimenting with stuff like grid=true&
@@ -22,7 +25,7 @@ class blog_index
 		$param = \lf\requestGet('Param');
 		
 		// if the URL matches format "###-some-title",
-		if(preg_match('/^([0-9]+)\-(.*)/', $param[0], $match))
+		if(isset($param[0]) && preg_match('/^([0-9]+)\-(.*)/', $param[0], $match))
 			// rewrite to have post rendered
 			return $this->viewPost($match[1]);
 		else
@@ -31,11 +34,17 @@ class blog_index
 	
 	private function viewPostList()
 	{
+		$filter = [];
+		if(isset($this->ini['cat']))
+			$filter['cat'] = $this->ini['cat'];
+		
+		$blog = (new blog)->loadThreads($filter);
+		//$threads = $blog->getThreads()->getAll();
+		//$limit = $blog->getThreads()->rowCount();
+		
 		$p = 1;
 		if(isset($_GET['p']))
 			$p = $_GET['p'];
-		
-		$blog = (new blog)->loadThreads($_GET);
 		
 		/* NEXT && PREV */
 		$prev = '<i class="fa fa-caret-left"></i> Newer';
@@ -44,13 +53,7 @@ class blog_index
 		if($p > 1)
 			$prev = '<a href="?p='.($p - 1).'">'.$prev.'</a>';
 
-		$threads = (new BlogThreads);
-		if(isset($this->ini['cat']))
-			$threads->byCategory($this->ini['cat']);
-
-		$limit = $threads->rowCount();
-
-		if($p * $blog->ppp() < $limit)
+		if($p * $blog->ppp() < $blog->threadCount())
 			$next = '<a href="?p='.($p + 1).'">'.$next.'</a>';
 			
 		$page =  '/ Page '.$p;

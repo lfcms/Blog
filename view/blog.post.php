@@ -8,14 +8,17 @@
 		</h2>
 		
 		<span>Posted by {user:<?php echo $post['owner_id'] ?>} <?=since(strtotime($post['date']));?></span>
+		<?php if( isset($exclude) && in_array('content', $exclude) ):?>
+		<?php else: ?>
 		<p><?php
 			$Parsedown = new Parsedown();
 			echo $Parsedown->text($post['content']);
 		?></p>
+		<?php endif; ?>
 		<br style="clear:both;" />
 		<ul class="hlist hspaced"> 
 			<li>
-				<a href="%appurl%<?php echo $id.'-'.$url_title; ?>">
+				<a href="<?php echo \lf\requestGet('ActionUrl').$post['id'].'-'.$url_title; ?>">
 					<i class="fa fa-link"></i> Permalink
 				</a>
 			</li>
