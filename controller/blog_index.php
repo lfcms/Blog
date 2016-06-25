@@ -1,14 +1,11 @@
 <?php
 
-if(!class_exists('\blog'))                                         
-    include 'model/blog.php';
-
 class blog_index
 {
 	public $theme = 'lf';
 	public $chosenCategory = null;
 	
-	public function init()
+	public function __construct()
 	{
 		(new \lf\template)->setTitle('Blog') ;
 		
@@ -19,14 +16,21 @@ class blog_index
 			$this->ini = array_combine($match[1], $match[2]);
 	}
 	
-	//default
+	// # Display the latest blog posts
 	public function main()
 	{
-		$vars = \lf\requestGet('Param');
+		$param = \lf\requestGet('Param');
 		
-		if(preg_match('/^([0-9]+)\-(.*)/', $vars[0], $match))
+		// if the URL matches format "###-some-title",
+		if(preg_match('/^([0-9]+)\-(.*)/', $param[0], $match))
+			// rewrite to have post rendered
 			return $this->viewPost($match[1]);
-		
+		else
+			return $this->viewPostList();
+	}
+	
+	private function viewPostList()
+	{
 		$p = 1;
 		if(isset($_GET['p']))
 			$p = $_GET['p'];

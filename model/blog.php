@@ -116,8 +116,6 @@ class blog
 				','.$this->postsPerPage;			// p = 1. (p - 1)*3,ppp = LIMIT 0, 3
 													// p = 2. (p - 1)*ppp = LIMIT 3, 3
 													// p = 3. (p - 1)*ppp = LIMIT 6, 3
-		
-		
 		unset($filter['p']);
 		
 		foreach($filter as $index => $value)
@@ -140,9 +138,12 @@ class blog
 	
 	public function getThreads()
 	{
+		// see if its cached
 		if( is_null( $this->threads ) )
+			// load it if it is not
 			$this->loadThreads();
 		
+		// print the loaded result
 		return $this->threads->getAll();
 	}
 	
