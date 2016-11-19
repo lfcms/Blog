@@ -65,6 +65,7 @@ class blog
 						->orderBy('category')
 						->find();
 		
+		$ret = [];
 		if(is_null($categories))
 			return array('Uncategorized');
 		else

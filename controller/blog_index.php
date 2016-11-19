@@ -2,15 +2,13 @@
 
 class blog_index
 {
+	private $ini = '';
 	public $theme = 'lf';
 	public $chosenCategory = null;
 	
 	public function __construct()
 	{
 		(new \lf\template)->setTitle('Blog') ;
-		
-		if( !isset( $this->ini ) )
-			$this->ini = '';
 		
 		$ini = $this->ini;
 		
@@ -101,6 +99,7 @@ class blog_index
 	public function printCategoryCount($chosenCategory = null)
 	{
 		// this should be its own table. counting all rows is slow.
+			$catmap = [];
 		foreach( (new BlogThreads)->cols('category')->getAll() as $value )
 		{
 			$category = $value['category'];

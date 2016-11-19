@@ -1,5 +1,6 @@
 <?php
 
+include_once 'resource/blog.php';
 include_once 'model/blog.php';
 include_once 'controller/blog_index.php';
 include_once '3rdparty/parsedown/Parsedown.php'; // LF.'system/lib/ is in our $PATH
