@@ -99,7 +99,7 @@ class blog_index
 	public function printCategoryCount($chosenCategory = null)
 	{
 		// this should be its own table. counting all rows is slow.
-			$catmap = [];
+		$catmap = [];
 		foreach( (new BlogThreads)->cols('category')->getAll() as $value )
 		{
 			$category = $value['category'];
