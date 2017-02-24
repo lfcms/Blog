@@ -6,7 +6,7 @@ RENAME TABLE io_threads TO blog_threads, io_messages TO blog_messages;
 
 CREATE TABLE IF NOT EXISTS `blog_threads` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
-  `date` varchar(20) NOT NULL,
+  `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `owner_id` int(11) NOT NULL,
   `category` varchar(128) NOT NULL,
   `title` varchar(128) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `blog_threads` (
 
 CREATE TABLE IF NOT EXISTS `blog_messages` (
   `msg_id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` varchar(20) NOT NULL,
+  `date` varchar(20) DEFAULT NOW(),
   `parent_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `device` varchar(128) NOT NULL,

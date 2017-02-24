@@ -5,7 +5,45 @@ class blog
 	private $threads = null;
 	public $postsPerPage = 3;
 	
-	
+	public function thread($id = null)
+	{
+		$blogThreads = (new \BlogThreads);
+		
+		// get
+		switch($_SERVER['REQUEST_METHOD'])
+		{
+			case 'GET':
+				if( is_null( $id ) )
+					$result = $blogThreads->getAll();
+				else
+					$result = $blogThreads->getById($id);
+				break;
+			case 'POST':
+				$result = $blogThreads->insertArray($_POST);
+				break;
+			case 'PUT':
+				if($id == null)
+					return '400';
+				
+				$payload = array();
+				parse_raw_http_request($payload);
+				
+				$idFromSession = (new \lf\user)->idFromSession();
+				
+				$blogThreads
+					->byOwner_id($idFromSession)
+					->updateById($id, $payload);
+					
+				return "Success";
+				
+				break;
+			case 'GET':
+				$result = (new \BlogThreads)->getAll();
+				break;
+		}
+		
+		return $result;
+	}
 	
 	/**
 	 * Default list of Articles

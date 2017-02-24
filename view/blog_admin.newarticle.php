@@ -11,7 +11,7 @@
 	</div>
 	<div class="row">
 		<div class="col-5">
-			<select name="category" id=""><?=$cat_options;?></select>
+			<select name="category" id=""><option selected="selected" disabled="disabled">--Select a Category--</option><?=$cat_options;?></select>
 		</div>
 		<div class="col-5">
 			<input type="text" name="newcat" placeholder="New Category" />

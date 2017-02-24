@@ -4,14 +4,17 @@ namespace blog;
 
 // gonna make it restful or something
 
+class categories
+{
+	
+}
+
 class threads
 {
 	// list blogs endpoint
-	public function get($criteria = null)
+	public function get($by = null)
 	{
-		return (new \orm\blog_threads)
-					->find($criteria)
-					->json();
+		return (new \orm\blog_threads)->find($by);
 	}
 	
 	// post creates new ones
