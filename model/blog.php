@@ -5,40 +5,71 @@ class blog
 	private $threads = null;
 	public $postsPerPage = 3;
 	
+	
 	public function thread($id = null)
 	{
 		$blogThreads = (new \BlogThreads);
-		
-		// get
+		$schema = $blogThreads->getSchema();
+		// Handle RESTful request
 		switch($_SERVER['REQUEST_METHOD'])
 		{
+			// If GET, deliver all blog threads
+			// if $id specified, deliver just that thread
 			case 'GET':
 				if( is_null( $id ) )
-					$result = $blogThreads->getAll();
+					$threads = $blogThreads->getAll();
 				else
-					$result = $blogThreads->getById($id);
+					$threads = $blogThreads->getById($id);
+				$result = [
+					"threads" => $threads,
+					"schema" => $schema
+				];
 				break;
+				
+			// If POST, accept array of post data
 			case 'POST':
 				$result = $blogThreads->insertArray($_POST);
 				break;
+			// If PUT, given $id, update thread content with $_POST
 			case 'PUT':
 				if($id == null)
-					return '400';
+					return '400'; 
 				
 				$payload = array();
 				parse_raw_http_request($payload);
-				
-				$idFromSession = (new \lf\user)->idFromSession();
-				
-				$blogThreads
-					->byOwner_id($idFromSession)
-					->updateById($id, $payload);
-					
-				return "Success";
-				
+				$blogThreads->setAsNow('date');
+				$result = [
+					"result" => $blogThreads->updateById($id, $payload)
+				];
 				break;
-			case 'GET':
-				$result = (new \BlogThreads)->getAll();
+			case 'DELETE':
+				if($id == null)
+					return '400';
+				$result = (new \BlogThreads)->deleteById($id);
+				break;
+			case 'OPTIONS':
+				$result = [
+					"Verbs" => [
+						"GET" => [
+							"description" => "List blogs posts"
+							, "usage" => "Lists all posts by default. Specify thread id in URI for retrieving individual posts."
+						]
+						, "POST" => [
+							"description" => "Create a new blog post"
+							, "usage" => "Specify owner_id, category, title, and content. Inserted ID is returned."
+						]
+						, "PUT" => [
+							"description" => "Update a blog post"
+							, "usage" => "Specify owner_id, category, title, or content. Specify thread id in URI."
+						]
+					]
+					, "Schema" => [
+						(new \lf\orm)->fetchall("desc blog_threads")
+					]
+				];
+				break;
+			default:
+				$result = 'not implemented';
 				break;
 		}
 		
