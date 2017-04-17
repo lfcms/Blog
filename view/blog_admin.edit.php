@@ -2,6 +2,10 @@
 
 <?=notice();?>
 
+<a href="#" onclick="window.open('<?=\lf\requestGet('AdminUrl');?>media/', 'newwindow', 'width=800, height=600'); return false;">Click here to open media manager</a>
+
+<br>
+
 Last Edited: <?=$post->date;?>
 
 <form class="martop" action="<?=\lf\requestGet('ActionUrl');?>edit/<?=$post->id;?>/" method="post">
